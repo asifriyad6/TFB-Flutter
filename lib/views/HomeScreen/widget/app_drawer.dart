@@ -5,6 +5,7 @@ import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
 import 'package:tfb/views/AuthScreen/login_screen.dart';
 import '../../../navigation_menu.dart';
+import '../../../utils/config.dart';
 
 class AppDrawer extends StatelessWidget {
   final String appVersion;
@@ -37,7 +38,7 @@ class AppDrawer extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                    'https://media.licdn.com/dms/image/v2/C5103AQE_FlEO3vSvVA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1535960348058?e=2147483647&v=beta&t=uQEg4_Sun_SKdeEkBS-tO-KJvZJd-YMdrjv7aFXS3LY',
+                                    '${AppConfig.profileImage}/${authController.profileImageUrl}',
                                   ),
                                   maxRadius: 40,
                                 ),

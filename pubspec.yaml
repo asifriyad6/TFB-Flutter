@@ -57,6 +57,8 @@ dependencies:
   shared_preferences:
     #OTP Input
   pinput:
+    #Image Picker
+  image_picker:
 
 dev_dependencies:
   flutter_test:

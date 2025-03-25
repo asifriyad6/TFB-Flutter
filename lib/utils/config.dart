@@ -5,4 +5,5 @@ class AppConfig {
   static const String locationImage = '${baseUrl}/images/locations';
   static const String houseboatImage = '${baseUrl}/images/houseboat';
   static const String tourImage = '${baseUrl}/images/tours';
+  static const String profileImage = '${baseUrl}/images/customer';
 }

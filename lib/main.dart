@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tfb/Splash/splash_screen.dart';
 import 'package:tfb/navigation_menu.dart';
 import 'package:tfb/theme/theme_data.dart';
 import 'package:tfb/utils/colors.dart';
@@ -32,8 +33,14 @@ class MyApp extends StatelessWidget {
       // darkTheme: AppTheme.dark,
       //themeMode: ThemeMode.light,
       //home: PaymentSuccess(),
-      initialRoute: '/main',
+      initialRoute: '/splash',
       getPages: [
+        GetPage(
+          name: '/splash',
+          page: () => SplashScreen(),
+          transition: Transition.fadeIn,
+          transitionDuration: Duration(milliseconds: 200),
+        ),
         GetPage(
           name: '/main',
           page: () => NavigationMenu(),

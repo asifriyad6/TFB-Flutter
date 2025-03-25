@@ -41,18 +41,48 @@ class NavigationMenu extends StatelessWidget {
               backgroundColor: Colors.white,
               height: 80,
               elevation: 10,
-              indicatorColor: AppColor.greenLight,
+              indicatorColor: Colors.transparent,
               shadowColor: Colors.black,
               selectedIndex: controller.selectedIndex.value,
               onDestinationSelected: (index) =>
                   controller.selectedIndex.value = index,
               destinations: [
-                NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-                NavigationDestination(icon: Icon(Icons.tour), label: 'Tours'),
                 NavigationDestination(
-                    icon: Icon(Icons.houseboat), label: 'Houseboat'),
+                    icon: Icon(
+                      Icons.home_outlined,
+                      size: 30,
+                      color: Colors.black.withOpacity(.5),
+                    ),
+                    selectedIcon: Icon(Icons.home,
+                        size: 30, color: AppColor.primaryColor),
+                    label: 'Home'),
                 NavigationDestination(
-                    icon: Icon(Icons.person), label: 'Account')
+                    icon: Icon(
+                      Icons.tour_outlined,
+                      size: 30,
+                      color: Colors.black.withOpacity(.5),
+                    ),
+                    selectedIcon: Icon(Icons.tour,
+                        size: 30, color: AppColor.primaryColor),
+                    label: 'Tours'),
+                NavigationDestination(
+                    icon: Icon(
+                      Icons.houseboat_outlined,
+                      size: 30,
+                      color: Colors.black.withOpacity(.5),
+                    ),
+                    selectedIcon: Icon(Icons.houseboat,
+                        size: 30, color: AppColor.primaryColor),
+                    label: 'Houseboat'),
+                NavigationDestination(
+                    icon: Icon(
+                      Icons.person_outline,
+                      size: 30,
+                      color: Colors.black.withOpacity(.5),
+                    ),
+                    selectedIcon: Icon(Icons.person,
+                        size: 30, color: AppColor.primaryColor),
+                    label: 'Account')
               ],
             ),
           ),
@@ -86,7 +116,7 @@ class NavigationMenu extends StatelessWidget {
           CustomButton(
               title: 'YES',
               fullWidth: 150,
-              color: AppColor.primaryColor.withOpacity(.5),
+              color: AppColor.tertiaryColor,
               onTap: () => Get.back(result: true)),
         ],
       ),

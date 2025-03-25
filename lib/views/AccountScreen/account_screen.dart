@@ -4,9 +4,12 @@ import 'package:get/get.dart';
 import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/navigation_menu.dart';
 import 'package:tfb/utils/colors.dart';
+import 'package:tfb/utils/config.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
 import 'package:tfb/views/AccountScreen/widgets/menu_widget.dart';
 import 'package:tfb/views/AuthWrapper/auth_wrapper.dart';
+
+import '../../widget/custom_button.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -41,49 +44,64 @@ class AccountScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                    width: 160,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: ClipOval(
-                                      child: CircleAvatar(
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          imageUrl:
-                                              'https://media.licdn.com/dms/image/v2/C5103AQE_FlEO3vSvVA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1535960348058?e=2147483647&v=beta&t=uQEg4_Sun_SKdeEkBS-tO-KJvZJd-YMdrjv7aFXS3LY',
-                                          placeholder: (context, url) => Center(
-                                              child:
-                                                  CircularProgressIndicator()),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error), // Error icon
-                                        ),
-                                        minRadius: 70,
-                                        maxRadius: 70,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 80,
-                                    right: -8,
-                                    child: Container(
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: AppColor.primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.edit,
-                                          size: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              Obx(
+                                () {
+                                  return authController.isUploading.value
+                                      ? CircularProgressIndicator(
+                                          color: AppColor.primaryColor,
+                                          padding: EdgeInsets.all(52),
+                                        )
+                                      : Stack(
+                                          children: [
+                                            Container(
+                                              width: 160,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: ClipOval(
+                                                child: CircleAvatar(
+                                                  child: CachedNetworkImage(
+                                                    fit: BoxFit.cover,
+                                                    imageUrl:
+                                                        '${AppConfig.profileImage}/${authController.profileImageUrl}',
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Icon(Icons
+                                                            .error), // Error icon
+                                                  ),
+                                                  minRadius: 70,
+                                                  maxRadius: 70,
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 80,
+                                              right: -8,
+                                              child: Container(
+                                                height: 32,
+                                                decoration: BoxDecoration(
+                                                  color: AppColor.primaryColor,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    authController.pickImage();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.edit,
+                                                    size: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                },
                               ),
                               SizedBox(height: 15),
                               Text(
@@ -160,7 +178,32 @@ class AccountScreen extends StatelessWidget {
                             icon: Icons.logout,
                             title: 'Logout',
                             onTap: () {
-                              authController.logout();
+                              Get.dialog(AlertDialog(
+                                backgroundColor: Colors.white,
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 5),
+                                  child: Text(
+                                    "Are you sure you want to logout from TFB?",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                actions: [
+                                  CustomButton(
+                                      title: 'NO',
+                                      fullWidth: 150,
+                                      onTap: () => Get.back(result: false)),
+                                  CustomButton(
+                                      title: 'YES',
+                                      fullWidth: 150,
+                                      color: AppColor.tertiaryColor,
+                                      onTap: () => authController.logout()),
+                                ],
+                              ));
                             },
                             iconBg: Colors.black),
                       ],

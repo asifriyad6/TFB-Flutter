@@ -16,6 +16,7 @@ class ApiEndpoints {
   static Uri sendOtpRegister = Uri.parse('$apiUrl/register-sendotp');
   static Uri verifyOtp = Uri.parse('$apiUrl/register-verifyotp');
   static Uri register = Uri.parse('$apiUrl/register');
+  static Uri profilePictureUpload = Uri.parse('$apiUrl/upload-profile-photo');
   static Uri logout = Uri.parse('$apiUrl/logout');
   static Uri tourBooking = Uri.parse('$apiUrl/tour-booking');
 

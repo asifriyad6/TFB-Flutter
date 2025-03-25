@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/controller/home_controller.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/controller/tour_controller.dart';
@@ -22,6 +23,7 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put(HomeController());
     final houseboatController = Get.put(HouseboatController());
     final tourController = Get.put(TourController());
+    final authController = Get.put(AuthController());
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
@@ -53,12 +55,18 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 15),
-                        Text(
-                          'Hello, Traveler',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                            color: Colors.white,
+                        Obx(
+                          () => Text(
+                            authController.isAuthenticated.value
+                                ? 'Hello, ${authController.userModel.value.name}'
+                                : 'Hello, Traveler',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                       ],
@@ -106,6 +114,7 @@ class HomeScreen extends StatelessWidget {
                                 itemCount: controller.banner.length,
                                 itemBuilder: (context, index, realIndex) {
                                   return Container(
+                                    width: double.infinity,
                                     margin: EdgeInsets.symmetric(horizontal: 5),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(0),
@@ -114,6 +123,7 @@ class HomeScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         fit: BoxFit.cover,
+                                        width: double.infinity,
                                         imageUrl:
                                             '${AppConfig.bannerImage}/${controller.banner[index].name!}',
                                         placeholder: (context, url) => Center(

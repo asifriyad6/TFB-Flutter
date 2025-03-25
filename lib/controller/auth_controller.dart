@@ -1,8 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'package:tfb/utils/endpoints.dart';
 import 'package:tfb/views/AuthScreen/otp_verify.dart';
 import 'package:tfb/views/AuthScreen/save_customer.dart';
+import '../Helpers/token_helper.dart';
+import '../utils/config.dart';
 
 import '../models/user_model.dart';
 import '../services/api_services.dart';
@@ -24,11 +32,16 @@ class AuthController extends GetxController {
   var hasLowerCase = false.obs;
   final RegExp _passwordRegExp =
       RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
+  var profileImageUrl = ''.obs;
+  File? selectedImage;
+  final ImagePicker _picker = ImagePicker();
+  var isUploading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     checkToken();
+    getUserProfilePhoto();
   }
 
   checkToken() async {
@@ -64,6 +77,7 @@ class AuthController extends GetxController {
       await SharedServices.setData(
           SetType.string, 'user', jsonEncode(decode['data']));
       userModel.value = UserModel.fromJson(decode['data']);
+      profileImageUrl.value = userModel.value.profilePhoto!;
       update();
       Get.offAllNamed('/main');
     } catch (e) {
@@ -176,5 +190,55 @@ class AuthController extends GetxController {
       isLoading.value = false;
       Get.snackbar('Error', 'Something went wrong. Please try again.');
     }
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedImage = File(pickedFile.path);
+      uploadImage(selectedImage!);
+    }
+  }
+
+  Future<void> uploadImage(File imageFile) async {
+    isUploading(true);
+    var uri = Uri.parse("${ApiEndpoints.profilePictureUpload}");
+    var request = http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = await authToken();
+
+    var stream = http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var length = await imageFile.length();
+    var multipartFile = http.MultipartFile('profile_picture', stream, length,
+        filename: basename(imageFile.path));
+
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      response.stream.transform(utf8.decoder).listen((value) {
+        var jsonResponse = json.decode(value);
+        profileImageUrl.value =
+            jsonResponse['profile_picture_url']; // Update avatar
+      });
+    } else {
+      print("Upload failed: ${response.reasonPhrase}");
+    }
+    isUploading(false);
+  }
+
+  Future<String?> getUserProfilePhoto() async {
+    String? userDataString =
+        await SharedServices.getData(SetType.string, 'user');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+
+      // Assuming the profile photo is stored under the key 'profile_photo'
+      //return userData['profile_photo'];
+      profileImageUrl.value = userData['profile_photo'];
+    }
+    return null; // Return null if user data is not found
   }
 }

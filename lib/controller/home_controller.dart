@@ -70,5 +70,6 @@ class HomeController extends GetxController {
 
   Future<void> refreshPage() async {
     await getHouseboat();
+    await getTour();
   }
 }
