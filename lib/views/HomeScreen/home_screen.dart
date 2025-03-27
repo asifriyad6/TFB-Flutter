@@ -225,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        } else if (controller.houseboats.isEmpty) {
+                        } else if (controller.tours.isEmpty) {
                           return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 20),

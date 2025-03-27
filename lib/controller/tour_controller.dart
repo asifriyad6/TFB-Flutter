@@ -13,6 +13,7 @@ import '../services/api_services.dart';
 class TourController extends GetxController {
   final payment = Get.put(PaymentHelper());
   var tour = TourModel().obs;
+  var tours = <TourModel>[].obs;
   var tourDetails = TourDetails().obs;
   RxBool isLoading = RxBool(false);
   RxList scheduleDate = [].obs;
@@ -22,6 +23,19 @@ class TourController extends GetxController {
   RxBool isBookingAmount = false.obs;
   RxDouble totalPrice = 0.0.obs;
   var tourBooking = TourBookingRequest().obs;
+
+  getTourByLocation(String location) async {
+    isLoading.value = true;
+    final response = await ApiServices.getTourByLocation(location);
+    if (response.statusCode == 200) {
+      isLoading.value = false;
+      tours.value = tourModelFromJson(response.body);
+      update();
+    } else {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal Server Error');
+    }
+  }
 
   getTourDetails() async {
     isLoading.value = true;

@@ -34,7 +34,7 @@ class TourCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
-          height: height * .25,
+          height: height * .20,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -103,7 +103,7 @@ class TourCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         title,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -180,7 +180,7 @@ class TourCard extends StatelessWidget {
                           Text(
                             '৳ ${discounted_price}',
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

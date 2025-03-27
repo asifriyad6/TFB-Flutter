@@ -15,6 +15,7 @@ class HouseboatController extends GetxController {
   final payment = Get.put(PaymentHelper());
   var houseboatDetails = HouseboatDetails().obs;
   var houseboat = HouseboatModel().obs;
+  var houseboats = <HouseboatModel>[].obs;
   var houseboatCabins = <HouseboatCabin>[].obs;
   RxBool isLoading = RxBool(false);
   RxBool isCabinLoading = RxBool(false);
@@ -27,6 +28,19 @@ class HouseboatController extends GetxController {
   RxDouble grandTotal = 0.0.obs;
   RxBool isBookingAmount = false.obs;
   var houseboatBooking = HouseboatBookingRequest().obs;
+
+  getHouseboatByLocation(String location) async {
+    isLoading.value = true;
+    final response = await ApiServices.getHouseboatByLocation(location);
+    if (response.statusCode == 200) {
+      isLoading.value = false;
+      houseboats.value = houseboatModelFromJson(response.body);
+      update();
+    } else {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal Server Error');
+    }
+  }
 
   getHouseboatDetails() async {
     isLoading.value = true;

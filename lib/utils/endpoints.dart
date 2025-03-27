@@ -5,10 +5,12 @@ class ApiEndpoints {
   static String searchDestination = '$apiUrl/search-destination';
   static Uri bannerImages = Uri.parse('$apiUrl/banner-images');
   static Uri locationList = Uri.parse('$apiUrl/locations');
-  static Uri houseboatList = Uri.parse('$apiUrl/houseboat-list');
-  static Uri tourList = Uri.parse('$apiUrl/tour-list');
-  static String houseboatDetails = '$apiUrl/houseboat-list';
-  static String tourDetails = '$apiUrl/tour-list';
+  static Uri houseboatList = Uri.parse('$apiUrl/houseboats');
+  static String houseboatByLocation = '$apiUrl/houseboats/location';
+  static Uri tourList = Uri.parse('$apiUrl/tours');
+  static String tourByLocation = '$apiUrl/tours/location';
+  static String houseboatDetails = '$apiUrl/houseboats';
+  static String tourDetails = '$apiUrl/tours';
   static Uri houseboatCabins = Uri.parse('$apiUrl/houseboat-cabins');
   static Uri houseboatBooking = Uri.parse('$apiUrl/houseboat-booking');
   static Uri bookingList = Uri.parse('$apiUrl/bookings-all');

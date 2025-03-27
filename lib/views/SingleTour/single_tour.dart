@@ -14,18 +14,22 @@ import '../../utils/config.dart';
 import '../../widget/highlights.dart';
 
 class SingleTour extends StatefulWidget {
-  const SingleTour({super.key});
+  const SingleTour({
+    super.key,
+  });
 
   @override
   State<SingleTour> createState() => _SingleTourState();
 }
 
 class _SingleTourState extends State<SingleTour> {
-  final controller = Get.put(TourController());
+  final controller = Get.find<TourController>();
   @override
   void initState() {
     super.initState();
-    controller.getTourDetails();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getTourDetails();
+    });
   }
 
   @override
@@ -70,9 +74,11 @@ class _SingleTourState extends State<SingleTour> {
                           width: 10,
                         ),
                         double.parse(controller.tour.value.discountedPrice
-                                    .toString()) !=
-                                double.parse(
-                                    controller.tour.value.priceAdult.toString())
+                                        ?.toString() ??
+                                    '0') !=
+                                double.parse(controller.tour.value.priceAdult
+                                        ?.toString() ??
+                                    '0')
                             ? Text(
                                 '৳ ${controller.tour.value.priceAdult}',
                                 style: TextStyle(

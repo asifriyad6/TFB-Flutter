@@ -19,11 +19,13 @@ class SingleHouseboat extends StatefulWidget {
 }
 
 class _SingleHouseboatState extends State<SingleHouseboat> {
-  final controller = Get.put(HouseboatController());
+  final controller = Get.find<HouseboatController>();
   @override
   void initState() {
     super.initState();
-    controller.getHouseboatDetails();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getHouseboatDetails();
+    });
   }
 
   @override
@@ -284,53 +286,67 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    CarouselSlider.builder(
-                                      itemCount: controller.houseboatDetails
-                                          .value.images!.length,
-                                      itemBuilder: (context, index, realIndex) {
-                                        return Container(
-                                          width: double.infinity,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              imageUrl:
-                                                  '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.images![index].imageName}',
-                                              placeholder: (context, url) => Center(
-                                                  child:
-                                                      CircularProgressIndicator()),
-                                              errorWidget:
-                                                  (context, url, error) => Icon(
-                                                      Icons
-                                                          .error), // Error icon
+                                    controller.houseboatDetails.value.images!
+                                                .length >
+                                            0
+                                        ? CarouselSlider.builder(
+                                            itemCount: controller
+                                                .houseboatDetails
+                                                .value
+                                                .images!
+                                                .length,
+                                            itemBuilder:
+                                                (context, index, realIndex) {
+                                              return Container(
+                                                width: double.infinity,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: CachedNetworkImage(
+                                                    fit: BoxFit.cover,
+                                                    imageUrl:
+                                                        '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.images![index].imageName}',
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Icon(Icons
+                                                            .error), // Error icon
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            options: CarouselOptions(
+                                              height: height * .2,
+                                              aspectRatio: 16 / 9,
+                                              viewportFraction: 0.8,
+                                              initialPage: 0,
+                                              enableInfiniteScroll: true,
+                                              reverse: false,
+                                              autoPlay: false,
+                                              autoPlayInterval:
+                                                  Duration(seconds: 3),
+                                              autoPlayAnimationDuration:
+                                                  Duration(milliseconds: 800),
+                                              autoPlayCurve:
+                                                  Curves.fastOutSlowIn,
+                                              enlargeCenterPage: false,
+                                              enlargeFactor: 0.3,
+                                              scrollDirection: Axis.horizontal,
                                             ),
+                                          )
+                                        : Text(
+                                            'No Gallary Images Found!',
                                           ),
-                                        );
-                                      },
-                                      options: CarouselOptions(
-                                        height: height * .2,
-                                        aspectRatio: 16 / 9,
-                                        viewportFraction: 0.8,
-                                        initialPage: 0,
-                                        enableInfiniteScroll: true,
-                                        reverse: false,
-                                        autoPlay: false,
-                                        autoPlayInterval: Duration(seconds: 3),
-                                        autoPlayAnimationDuration:
-                                            Duration(milliseconds: 800),
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        enlargeCenterPage: false,
-                                        enlargeFactor: 0.3,
-                                        scrollDirection: Axis.horizontal,
-                                      ),
-                                    ),
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -372,7 +388,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                     Row(
                       children: [
                         Text(
-                          '৳ ${double.parse(controller.houseboat.value.discountedPrice.toString())}',
+                          '৳ ${double.parse(controller.houseboat.value.discountedPrice ?? '0.0')}',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -381,11 +397,11 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         const SizedBox(
                           width: 10,
                         ),
-                        double.parse(controller.houseboat.value.startingPrice
-                                    .toString()) >
+                        double.parse(controller.houseboat.value.startingPrice ??
+                                    '0.0') >
                                 double.parse(controller
-                                    .houseboat.value.discountedPrice
-                                    .toString())
+                                        .houseboat.value.discountedPrice ??
+                                    '0.0')
                             ? Text(
                                 '৳ ${double.parse(controller.houseboat.value.startingPrice.toString())}',
                                 style: TextStyle(

@@ -47,9 +47,27 @@ class ApiServices {
     );
   }
 
+  static Future<http.Response> getHouseboatByLocation(String id) async {
+    return await http.get(
+      Uri.parse('${ApiEndpoints.houseboatByLocation}/$id'),
+      headers: {
+        'Accept': 'Application/json',
+      },
+    );
+  }
+
   static Future<http.Response> getTour() async {
     return await http.get(
       ApiEndpoints.tourList,
+      headers: {
+        'Accept': 'Application/json',
+      },
+    );
+  }
+
+  static Future<http.Response> getTourByLocation(String id) async {
+    return await http.get(
+      Uri.parse('${ApiEndpoints.tourByLocation}/$id'),
       headers: {
         'Accept': 'Application/json',
       },
