@@ -17,7 +17,7 @@ class DatePickerBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16.0),
-      height: 430, // Adjust the height to fit the content
+      height: 400, // Adjust the height to fit the content
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -46,7 +46,7 @@ class DatePickerBottomSheet extends StatelessWidget {
                   suffixIcon: Icon(Icons.calendar_today),
                   border: OutlineInputBorder(),
                   labelStyle: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   )),
@@ -76,14 +76,14 @@ class DatePickerBottomSheet extends StatelessWidget {
                   Text(
                     'Adults',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Age above ${controller.tourDetails.value.childAge} years',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: Colors.black.withOpacity(.6),
                     ),
                   ),
@@ -121,7 +121,7 @@ class DatePickerBottomSheet extends StatelessWidget {
                         return Text(
                           controller.adultsCount.value.toString(),
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -159,14 +159,14 @@ class DatePickerBottomSheet extends StatelessWidget {
                   Text(
                     'Child',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Age below ${controller.tourDetails.value.childAge} years',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: Colors.black.withOpacity(.6),
                     ),
                   ),
@@ -204,7 +204,7 @@ class DatePickerBottomSheet extends StatelessWidget {
                         return Text(
                           controller.childCount.value.toString(),
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -241,7 +241,7 @@ class DatePickerBottomSheet extends StatelessWidget {
               Text(
                 'Total Price',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -250,7 +250,7 @@ class DatePickerBottomSheet extends StatelessWidget {
                   return Text(
                     '৳ ${(controller.totalPrice.value != 0 ? controller.totalPrice.value : controller.tour.value.discountedPrice)}',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   );
@@ -266,7 +266,8 @@ class DatePickerBottomSheet extends StatelessWidget {
               Obx(
                 () {
                   return Transform.scale(
-                    scale: .8,
+                    alignment: Alignment.center,
+                    scale: .53,
                     child: Switch.adaptive(
                       inactiveTrackColor: Colors.white,
                       activeColor: AppColor.primaryColor,
@@ -281,7 +282,8 @@ class DatePickerBottomSheet extends StatelessWidget {
               ),
               Text(
                 'Pay Booking Amount',
-                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -300,7 +302,6 @@ class DatePickerBottomSheet extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 10),
         ],
       ),
     );

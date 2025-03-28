@@ -42,6 +42,19 @@ class HouseboatController extends GetxController {
     }
   }
 
+  getAllHouseboat() async {
+    isLoading.value = true;
+    final response = await ApiServices.getHouseboatByLocation('all');
+    if (response.statusCode == 200) {
+      isLoading.value = false;
+      houseboats.value = houseboatModelFromJson(response.body);
+      update();
+    } else {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal Server Error');
+    }
+  }
+
   getHouseboatDetails() async {
     isLoading.value = true;
     final response =

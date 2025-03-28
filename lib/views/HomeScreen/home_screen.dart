@@ -51,19 +51,18 @@ class HomeScreen extends StatelessWidget {
                           icon: Icon(
                             Icons.menu,
                             color: Colors.white,
-                            size: 27,
+                            size: 22,
                           ),
                         ),
-                        SizedBox(width: 15),
                         Obx(
                           () => Text(
                             authController.isAuthenticated.value
                                 ? 'Hello, ${authController.userModel.value.name}'
-                                : 'Hello, Traveler',
+                                : 'Hello, Traveller',
                             maxLines: 1,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 24,
+                              fontSize: 18,
                               color: Colors.white,
                               overflow: TextOverflow.ellipsis,
                             ),

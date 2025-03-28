@@ -16,6 +16,7 @@ class NavigationMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());
+    final width = MediaQuery.sizeOf(context).width;
 
     return WillPopScope(
       onWillPop: () async {
@@ -39,7 +40,8 @@ class NavigationMenu extends StatelessWidget {
             ),
             child: NavigationBar(
               backgroundColor: Colors.white,
-              height: 80,
+              labelPadding: EdgeInsets.all(0),
+              height: 60,
               elevation: 10,
               indicatorColor: Colors.transparent,
               shadowColor: Colors.black,
@@ -50,38 +52,38 @@ class NavigationMenu extends StatelessWidget {
                 NavigationDestination(
                     icon: Icon(
                       Icons.home_outlined,
-                      size: 30,
+                      size: 25,
                       color: Colors.black.withOpacity(.5),
                     ),
                     selectedIcon: Icon(Icons.home,
-                        size: 30, color: AppColor.primaryColor),
+                        size: 25, color: AppColor.primaryColor),
                     label: 'Home'),
                 NavigationDestination(
                     icon: Icon(
                       Icons.tour_outlined,
-                      size: 30,
+                      size: 25,
                       color: Colors.black.withOpacity(.5),
                     ),
                     selectedIcon: Icon(Icons.tour,
-                        size: 30, color: AppColor.primaryColor),
+                        size: 25, color: AppColor.primaryColor),
                     label: 'Tours'),
                 NavigationDestination(
                     icon: Icon(
                       Icons.houseboat_outlined,
-                      size: 30,
+                      size: 25,
                       color: Colors.black.withOpacity(.5),
                     ),
                     selectedIcon: Icon(Icons.houseboat,
-                        size: 30, color: AppColor.primaryColor),
+                        size: 25, color: AppColor.primaryColor),
                     label: 'Houseboat'),
                 NavigationDestination(
                     icon: Icon(
                       Icons.person_outline,
-                      size: 30,
+                      size: 25,
                       color: Colors.black.withOpacity(.5),
                     ),
                     selectedIcon: Icon(Icons.person,
-                        size: 30, color: AppColor.primaryColor),
+                        size: 25, color: AppColor.primaryColor),
                     label: 'Account')
               ],
             ),
@@ -96,6 +98,8 @@ class NavigationMenu extends StatelessWidget {
   Future<bool> _showExitConfirmation() async {
     bool? exit = await Get.dialog(
       AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0))),
         backgroundColor: Colors.white,
         content: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -103,19 +107,16 @@ class NavigationMenu extends StatelessWidget {
             "Are you sure you want to exit?",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: 18,
             ),
             textAlign: TextAlign.center,
           ),
         ),
         actions: [
-          CustomButton(
-              title: 'NO',
-              fullWidth: 150,
-              onTap: () => Get.back(result: false)),
+          CustomButton(title: 'NO', onTap: () => Get.back(result: false)),
+          SizedBox(height: 10),
           CustomButton(
               title: 'YES',
-              fullWidth: 150,
               color: AppColor.tertiaryColor,
               onTap: () => Get.back(result: true)),
         ],

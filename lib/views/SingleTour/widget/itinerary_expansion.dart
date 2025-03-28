@@ -22,13 +22,14 @@ class ItineraryExpansion extends StatelessWidget {
         ],
       ),
       child: ExpansionTile(
+        dense: true,
         expandedAlignment: Alignment.bottomLeft,
         shape: RoundedRectangleBorder(),
-        childrenPadding: EdgeInsets.fromLTRB(18, 0, 10, 15),
+        childrenPadding: EdgeInsets.fromLTRB(15, 0, 10, 15),
         title: Text(
           itineraryDay,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -38,7 +39,7 @@ class ItineraryExpansion extends StatelessWidget {
               Text(
                 itineraryName,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               )
             ],

@@ -23,79 +23,82 @@ class LoginScreen extends StatelessWidget {
             )),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Obx(
-            () => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome Back!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Continue your holiday with TravelFreak BD',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    focusColor: AppColor.primaryColor,
-                    hintText: 'Format : 016*******',
-                    labelText: 'Mobile Number',
-                    prefixIcon: Icon(Icons.smartphone),
-                  ),
-                  onChanged: (value) {
-                    controller.userModel.value.phone = value;
-                  },
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  obscureText: controller.passView.value,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    focusColor: AppColor.primaryColor,
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.password),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        controller.passView.value = !controller.passView.value;
-                      },
-                      icon: Icon(controller.passView.value
-                          ? Icons.visibility
-                          : Icons.visibility_off),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Obx(
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome Back!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onChanged: (value) {
-                    controller.userModel.value.password = value;
-                  },
-                ),
-                SizedBox(height: 20),
-                CustomButton(
-                  title: controller.loadingLogin.value
-                      ? 'Please Wait...'
-                      : 'Log In',
-                  onTap: () {
-                    controller.login();
-                  },
-                ),
-                SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    Get.to(ForgetPassword());
-                  },
-                  child: Text(
-                    'Forget Password?',
-                    style: TextStyle(fontSize: 16, color: Colors.blue),
+                  Text(
+                    'Continue your holiday with TravelFreak BD',
+                    style: TextStyle(fontSize: 16),
                   ),
-                ),
-              ],
+                  SizedBox(height: 20),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      focusColor: AppColor.primaryColor,
+                      hintText: 'Format : 016*******',
+                      labelText: 'Mobile Number',
+                      prefixIcon: Icon(Icons.smartphone),
+                    ),
+                    onChanged: (value) {
+                      controller.userModel.value.phone = value;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    obscureText: controller.passView.value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      focusColor: AppColor.primaryColor,
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.password),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.passView.value =
+                              !controller.passView.value;
+                        },
+                        icon: Icon(controller.passView.value
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      controller.userModel.value.password = value;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  CustomButton(
+                    title: controller.loadingLogin.value
+                        ? 'Please Wait...'
+                        : 'Log In',
+                    onTap: () {
+                      controller.login();
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(ForgetPassword());
+                    },
+                    child: Text(
+                      'Forget Password?',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

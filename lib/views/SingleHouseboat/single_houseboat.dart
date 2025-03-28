@@ -6,6 +6,7 @@ import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/utils/config.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:tfb/views/SingleHouseboat/houseboat_dateSelect.dart';
+import 'package:tfb/widget/custom_button.dart';
 import 'package:tfb/widget/highlights.dart';
 
 import '../../utils/colors.dart';
@@ -57,6 +58,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -86,7 +88,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: height * .3),
+                            SizedBox(height: height * .28),
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -108,7 +110,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                       children: [
                                         Icon(
                                           Icons.location_on,
-                                          size: 16,
+                                          size: 14,
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -116,7 +118,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                         Text(
                                           '${controller.houseboat.value.location}, ${controller.houseboat.value.city}',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ],
@@ -129,12 +131,12 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                       overflow: TextOverflow.ellipsis,
                                       controller.houseboat.value.title!,
                                       style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 10,
                                     ),
                                     Row(
                                       children: [
@@ -218,7 +220,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     ),
                                     HtmlWidget(
                                       '${controller.houseboatDetails.value.description}',
-                                      textStyle: TextStyle(fontSize: 16),
+                                      textStyle: TextStyle(fontSize: 14),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -279,7 +281,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     Text(
                                       'Gallery Images',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -373,7 +375,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
           ],
         ),
         child: BottomAppBar(
-          height: 80,
+          height: 70,
           color: Colors.white,
           elevation: 5,
           child: Row(
@@ -384,13 +386,18 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Starting from'),
+                    Text(
+                      'Starting from',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
                     Row(
                       children: [
                         Text(
-                          '৳ ${double.parse(controller.houseboat.value.discountedPrice ?? '0.0')}',
+                          '৳${double.parse(controller.houseboat.value.discountedPrice ?? '0.0')}',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -405,7 +412,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                             ? Text(
                                 '৳ ${double.parse(controller.houseboat.value.startingPrice.toString())}',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.red,
                                   decoration: TextDecoration.lineThrough,
@@ -433,17 +440,17 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                 },
                 child: Container(
                   width: width * .35,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: AppColor.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
                     textAlign: TextAlign.center,
                     'Book Now',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

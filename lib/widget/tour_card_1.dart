@@ -3,6 +3,8 @@ import 'dart:ffi';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tfb/utils/config.dart';
+import 'package:tfb/widget/custom_button.dart';
 
 import '../utils/colors.dart';
 
@@ -62,7 +64,7 @@ class TourCard1 extends StatelessWidget {
               ),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                imageUrl: 'http://10.0.2.2:8000/images/houseboat/${thumbnail}',
+                imageUrl: '${AppConfig.houseboatImage}/${thumbnail}',
                 placeholder: (context, url) =>
                     Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) =>
@@ -80,15 +82,17 @@ class TourCard1 extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.location_on,
-                      size: 16,
+                      size: 14,
                     ),
                     SizedBox(
                       width: 5,
                     ),
                     Text(
                       location,
+                      maxLines: 1,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -98,12 +102,12 @@ class TourCard1 extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   title,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,7 +116,7 @@ class TourCard1 extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.calendar_month,
-                          size: 18,
+                          size: 14,
                         ),
                         SizedBox(
                           width: 5,
@@ -122,7 +126,7 @@ class TourCard1 extends StatelessWidget {
                               ? (DateFormat('yyyy-MM-dd').format(schedule!))
                               : 'Flexible Date',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -131,21 +135,21 @@ class TourCard1 extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.timer_outlined,
-                          size: 18,
+                          size: 14,
                         ),
                         SizedBox(
                           width: 5,
                         ),
                         Text(
                           '3 Nights 2 Days',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ],
                     )
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   children: [
@@ -157,21 +161,21 @@ class TourCard1 extends StatelessWidget {
                           Text(
                             'Destination',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Tour Style',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Capacity',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -186,19 +190,19 @@ class TourCard1 extends StatelessWidget {
                           Text(
                             destination,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                             ),
                           ),
                           Text(
                             'Group, Fully Guided',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                             ),
                           ),
                           Text(
                             capacity.toString(),
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                             ),
                           ),
                         ],
@@ -219,29 +223,8 @@ class TourCard1 extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: onTap,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        width: width * .4,
-                        child: Text(
-                          'Book Now',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    CustomButton(
+                        title: 'Book Now', fullWidth: 120, onTap: onTap),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -249,7 +232,7 @@ class TourCard1 extends StatelessWidget {
                             ? Text(
                                 '৳ ${starting_price}',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.red,
                                   decoration: TextDecoration.lineThrough,
@@ -261,15 +244,15 @@ class TourCard1 extends StatelessWidget {
                           children: [
                             Text(
                               'Start from',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 5,
                             ),
                             Text(
-                              '৳ ${discounted_price}',
+                              '৳${discounted_price}',
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

@@ -37,6 +37,19 @@ class TourController extends GetxController {
     }
   }
 
+  getAllTour() async {
+    isLoading.value = true;
+    final response = await ApiServices.getTourByLocation('all');
+    if (response.statusCode == 200) {
+      isLoading.value = false;
+      tours.value = tourModelFromJson(response.body);
+      update();
+    } else {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal Server Error');
+    }
+  }
+
   getTourDetails() async {
     isLoading.value = true;
     final response = await ApiServices.getTourDetails(tour.value.slug!);

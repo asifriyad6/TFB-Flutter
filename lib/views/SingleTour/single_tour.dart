@@ -48,7 +48,7 @@ class _SingleTourState extends State<SingleTour> {
           ],
         ),
         child: BottomAppBar(
-          height: 80,
+          height: 70,
           color: Colors.white,
           elevation: 5,
           child: Row(
@@ -60,13 +60,18 @@ class _SingleTourState extends State<SingleTour> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Per Person'),
+                    Text(
+                      'Per Person',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
                     Row(
                       children: [
                         Text(
                           '৳ ${controller.tour.value.discountedPrice}',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -82,7 +87,7 @@ class _SingleTourState extends State<SingleTour> {
                             ? Text(
                                 '৳ ${controller.tour.value.priceAdult}',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.red,
                                   decoration: TextDecoration.lineThrough,
@@ -133,6 +138,7 @@ class _SingleTourState extends State<SingleTour> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -146,7 +152,9 @@ class _SingleTourState extends State<SingleTour> {
                                     onPressed: () {
                                       Get.back();
                                     },
-                                    icon: Icon(Icons.arrow_back),
+                                    icon: Icon(
+                                      Icons.arrow_back,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -162,7 +170,7 @@ class _SingleTourState extends State<SingleTour> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: height * .3),
+                            SizedBox(height: height * .28),
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -174,14 +182,11 @@ class _SingleTourState extends State<SingleTour> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
                                     Row(
                                       children: [
                                         Icon(
                                           Icons.location_on,
-                                          size: 16,
+                                          size: 14,
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -189,7 +194,7 @@ class _SingleTourState extends State<SingleTour> {
                                         Text(
                                           '${controller.tour.value.city!} , ${controller.tour.value.location!}',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ],
@@ -198,16 +203,16 @@ class _SingleTourState extends State<SingleTour> {
                                       height: 5,
                                     ),
                                     Text(
-                                      maxLines: 2,
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       controller.tour.value.title!,
                                       style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 10,
                                     ),
                                     Row(
                                       children: [
@@ -285,7 +290,7 @@ class _SingleTourState extends State<SingleTour> {
                                     HtmlWidget(
                                       '${controller.tourDetails.value.description}',
                                       textStyle: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                       ),
                                     ),
                                     Divider(
@@ -341,7 +346,7 @@ class _SingleTourState extends State<SingleTour> {
                                     Text(
                                       'Itinerary',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -373,7 +378,7 @@ class _SingleTourState extends State<SingleTour> {
                                     Text(
                                       'Gallery Images',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

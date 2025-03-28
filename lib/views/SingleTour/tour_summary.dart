@@ -15,13 +15,16 @@ class TourSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: 52,
-          width: 52,
+          height: 35,
+          width: 35,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColor.primaryColor.withOpacity(.3),
           ),
-          child: Icon(icon),
+          child: Icon(
+            icon,
+            size: 16,
+          ),
         ),
         SizedBox(
           width: 15,
@@ -33,14 +36,14 @@ class TourSummary extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               text,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 12,
               ),
             )
           ],

@@ -4,11 +4,13 @@ import 'dart:convert';
 
 import 'package:tfb/services/api_services.dart';
 
+import '../models/location_model.dart';
+
 class SearchSuggestionController extends GetxController {
   var searchController = TextEditingController();
-  var suggestions = [].obs;
+  var suggestions = <LocationModel>[].obs;
   var isLoading = false.obs;
-  var selectedDestination = "".obs;
+  var selectedDestination = LocationModel().obs;
 
   void fetchSuggestions(String query) async {
     if (query.isEmpty) {
@@ -19,13 +21,11 @@ class SearchSuggestionController extends GetxController {
       isLoading(true);
       final response = await ApiServices.getSearchDestination(query);
       if (response.statusCode == 200) {
-        final List data = json.decode(response.body);
-        suggestions.value = data;
-        print(data);
+        //final List data = json.decode(response.body);
+        suggestions.value = locationModelFromJson(response.body);
       } else {
         final decode = jsonDecode(response.body);
         suggestions.clear();
-        print(decode);
       }
     } catch (e) {
       print("Error fetching suggestions: $e");
@@ -36,8 +36,8 @@ class SearchSuggestionController extends GetxController {
   }
 
   // Select a destination
-  void selectDestination(String destination) {
+  void selectDestination(LocationModel destination) {
     selectedDestination.value = destination;
-    searchController.text = destination;
+    searchController.text = destination.name!;
   }
 }

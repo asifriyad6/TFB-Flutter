@@ -16,7 +16,7 @@ class SectionTitle extends StatelessWidget {
           children: [
             Container(
               width: 6,
-              height: 35,
+              height: 20,
               decoration: BoxDecoration(
                 color: AppColor.primaryColor,
               ),
@@ -27,7 +27,7 @@ class SectionTitle extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -46,6 +46,7 @@ class SectionTitle extends StatelessWidget {
               'Show More',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
+                fontSize: 12,
               ),
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tfb/controller/search_controller.dart';
-import 'package:tfb/utils/colors.dart';
+import 'package:tfb/views/Location/location_wise.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -43,8 +43,13 @@ class _SearchScreenState extends State<SearchScreen> {
             suffixIcon: IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                if (searchController.selectedDestination.value.isNotEmpty) {
-                  //Get.to(() => DestinationPage(destination: searchController.selectedDestination.value), transition: Transition.rightToLeftWithFade);
+                if (!searchController.selectedDestination.value.isNull) {
+                  Get.to(
+                      () => LocationWise(
+                            location:
+                                searchController.selectedDestination.value,
+                          ),
+                      transition: Transition.rightToLeftWithFade);
                 } else {
                   Get.snackbar("Error", "Please select a destination",
                       snackPosition: SnackPosition.BOTTOM);
@@ -77,12 +82,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     size: 18,
                   ),
                   title: Text(
-                    item["name"],
+                    item.name!,
                     textAlign: TextAlign.left,
                   ),
                   onTap: () {
-                    searchController.selectDestination(item["name"]);
-                    //Get.to(() => DestinationPage(destination: item["name"]), transition: Transition.rightToLeftWithFade);
+                    searchController.selectDestination(item);
+                    Get.to(
+                        () => LocationWise(
+                              location: item,
+                            ),
+                        transition: Transition.fadeIn);
                   },
                 );
               },

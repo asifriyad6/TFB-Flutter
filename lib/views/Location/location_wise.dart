@@ -33,14 +33,13 @@ class _LocationWiseState extends State<LocationWise> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
-    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
           children: [
             CachedNetworkImage(
               width: double.infinity,
-              height: height * .44,
+              height: height * .35,
               fit: BoxFit.cover,
               imageUrl:
                   '${AppConfig.locationImage}/${widget.location.thumbnail}',
@@ -52,6 +51,7 @@ class _LocationWiseState extends State<LocationWise> {
             SafeArea(
                 child: Column(
               children: [
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -70,7 +70,7 @@ class _LocationWiseState extends State<LocationWise> {
                     ),
                   ],
                 ),
-                SizedBox(height: height * .3),
+                SizedBox(height: height * .2),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -89,7 +89,7 @@ class _LocationWiseState extends State<LocationWise> {
                             'Tours & Houseboats in ${widget.location.name!}',
                             maxLines: 1,
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
                             ),

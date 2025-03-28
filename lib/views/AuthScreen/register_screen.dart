@@ -34,10 +34,10 @@ class RegisterScreen extends StatelessWidget {
                     : Column(
                         children: [
                           Text(
-                            'create Account!',
+                            'Create Account!',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 26,
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

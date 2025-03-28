@@ -28,13 +28,26 @@ class AccountScreen extends StatelessWidget {
               : Scaffold(
                   appBar: AppBar(
                     backgroundColor: Colors.white,
+                    flexibleSpace: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black.withOpacity(.2),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
                     leading: IconButton(
                       onPressed: () {
                         navController.selectedIndex.value = 0;
                       },
                       icon: Icon(Icons.arrow_back),
                     ),
-                    title: Text('Account'),
+                    title: Text(
+                      'Account',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                   body: SafeArea(
                     child: Column(
@@ -179,15 +192,18 @@ class AccountScreen extends StatelessWidget {
                             title: 'Logout',
                             onTap: () {
                               Get.dialog(AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(0))),
                                 backgroundColor: Colors.white,
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 5),
                                   child: Text(
-                                    "Are you sure you want to logout from TFB?",
+                                    "Are you sure you want to logout?",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 24,
+                                      fontSize: 18,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -195,11 +211,10 @@ class AccountScreen extends StatelessWidget {
                                 actions: [
                                   CustomButton(
                                       title: 'NO',
-                                      fullWidth: 150,
                                       onTap: () => Get.back(result: false)),
+                                  SizedBox(height: 10),
                                   CustomButton(
                                       title: 'YES',
-                                      fullWidth: 150,
                                       color: AppColor.tertiaryColor,
                                       onTap: () => authController.logout()),
                                 ],

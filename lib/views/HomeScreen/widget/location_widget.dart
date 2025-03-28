@@ -66,17 +66,19 @@ class LocationWidget extends StatelessWidget {
                                 Icon(
                                   Icons.location_on,
                                   color: Colors.white,
+                                  size: 16,
                                 ),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 Text(
                                   location.name!,
+                                  maxLines: 1,
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis),
                                 ),
                               ],
                             ),
@@ -85,35 +87,41 @@ class LocationWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.tour,
-                                  size: 16,
+                                  size: 12,
                                   color: Colors.white,
                                 ),
                                 SizedBox(width: 5),
                                 Text(
                                   location.tourCount.toString(),
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 SizedBox(width: 5),
                                 Text(
                                   '|',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 SizedBox(width: 5),
                                 Icon(
                                   Icons.houseboat,
-                                  size: 16,
+                                  size: 12,
                                   color: Colors.white,
                                 ),
                                 SizedBox(width: 5),
                                 Text(
                                   location.houseboatCount.toString(),
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),

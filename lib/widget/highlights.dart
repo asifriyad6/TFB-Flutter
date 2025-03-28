@@ -20,7 +20,7 @@ class Highlights extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -38,6 +38,7 @@ class Highlights extends StatelessWidget {
                 Icon(
                   icon,
                   color: iconColor,
+                  size: 16,
                 ),
                 SizedBox(
                   width: 10,
@@ -45,7 +46,7 @@ class Highlights extends StatelessWidget {
                 Expanded(
                   child: Text(
                     highlights[index],
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 14),
                   ),
                 ),
               ],

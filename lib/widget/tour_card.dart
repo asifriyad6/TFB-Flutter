@@ -82,7 +82,7 @@ class TourCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.location_on,
-                            size: 16,
+                            size: 12,
                           ),
                           SizedBox(
                             width: 5,
@@ -90,7 +90,7 @@ class TourCard extends StatelessWidget {
                           Text(
                             '$city , $location',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
                         ],
@@ -103,7 +103,7 @@ class TourCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         title,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -114,7 +114,7 @@ class TourCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.calendar_month,
-                            size: 18,
+                            size: 14,
                           ),
                           SizedBox(
                             width: 5,
@@ -122,7 +122,7 @@ class TourCard extends StatelessWidget {
                           Text(
                             '${DateFormat('yyyy-MM-dd').format(schedule!)}',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 12,
                             ),
                           ),
                         ],
@@ -131,14 +131,16 @@ class TourCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.timer_outlined,
-                            size: 18,
+                            size: 14,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
                             duration,
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
@@ -150,37 +152,49 @@ class TourCard extends StatelessWidget {
                           Text(
                             "Includes",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          Icon(Icons.train),
+                          Icon(
+                            Icons.train,
+                            size: 16,
+                          ),
                           SizedBox(
                             width: 5,
                           ),
-                          Icon(Icons.hotel),
+                          Icon(
+                            Icons.hotel,
+                            size: 16,
+                          ),
                           SizedBox(
                             width: 5,
                           ),
-                          Icon(Icons.restaurant),
+                          Icon(
+                            Icons.restaurant,
+                            size: 16,
+                          ),
                           SizedBox(
                             width: 5,
                           ),
-                          Icon(Icons.hiking),
+                          Icon(
+                            Icons.hiking,
+                            size: 16,
+                          ),
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       Row(
                         children: [
                           Text(
                             '৳ ${discounted_price}',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
