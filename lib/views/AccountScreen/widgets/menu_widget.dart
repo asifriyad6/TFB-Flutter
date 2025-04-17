@@ -15,10 +15,11 @@ class AccountMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+      contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+      dense: true,
       onTap: onTap,
       leading: Container(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: iconBg,
             shape: BoxShape.circle,
@@ -26,12 +27,12 @@ class AccountMenu extends StatelessWidget {
           child: Icon(
             icon,
             color: Colors.white,
-            size: 18,
+            size: 16,
           )),
       title: Text(
         title,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 16,
         ),
       ),
     );

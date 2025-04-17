@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         width: fullWidth ?? double.infinity,
         decoration: BoxDecoration(
           color: color != null ? color : AppColor.primaryColor,
@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),

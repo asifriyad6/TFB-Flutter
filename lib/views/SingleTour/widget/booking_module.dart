@@ -1,7 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:tfb/controller/tour_controller.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/BookingDetails/booking_details.dart';

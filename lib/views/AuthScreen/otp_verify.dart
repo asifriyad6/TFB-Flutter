@@ -23,13 +23,13 @@ class OtpVerify extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Enter Your\nVerification Code',
+                'Enter Your\nOTP Verification Code',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               SizedBox(height: 10),
               Text(
-                'We just send you an one time passcode to this phone number 01673832243',
+                'We just send you an one time passcode to this phone number ${controller.userModel.value.phone ?? 0}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -58,21 +58,36 @@ class OtpVerify extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: width * .45,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: AppColor.secondaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      'Resend (4.5)',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
+                  Obx(
+                    () {
+                      return InkWell(
+                        onTap: controller.countdown.value == 0
+                            ? () {
+                                controller.resetTimer();
+                                controller.sendOtp(true);
+                              }
+                            : null,
+                        child: Container(
+                          width: width * .45,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: controller.countdown.value == 0
+                                ? AppColor.primaryColor
+                                : AppColor.secondaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            'Resend (${controller.countdown.value ~/ 60}:${(controller.countdown.value % 60).toString().padLeft(2, '0')})',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   InkWell(
                     onTap: () => Get.back(),

@@ -61,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                           CustomButton(
                             title: 'Continue',
                             onTap: () {
-                              controller.sendOtp();
+                              controller.sendOtp(false);
                             },
                           ),
                         ],

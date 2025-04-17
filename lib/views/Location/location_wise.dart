@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/controller/tour_controller.dart';
 import 'package:tfb/models/location_model.dart';
+import 'package:tfb/navigation_menu.dart';
 
 import '../../utils/config.dart';
 import '../../widget/section_title.dart';
@@ -23,6 +24,7 @@ class LocationWise extends StatefulWidget {
 class _LocationWiseState extends State<LocationWise> {
   final houseboatController = Get.put(HouseboatController());
   final tourController = Get.put(TourController());
+  final navController = Get.put(NavigationController());
   @override
   void initState() {
     super.initState();
@@ -96,7 +98,13 @@ class _LocationWiseState extends State<LocationWise> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        SectionTitle(title: 'Tours'),
+                        SectionTitle(
+                          title: 'Tours',
+                          onTap: () {
+                            Get.toNamed('/main');
+                            navController.selectedIndex.value = 1;
+                          },
+                        ),
                         SizedBox(height: 20),
                         Obx(
                           () {
@@ -124,8 +132,8 @@ class _LocationWiseState extends State<LocationWise> {
                                     title: tour.title!,
                                     city: tour.city!,
                                     location: tour.location!,
-                                    schedule: tour.firstSchedule!,
-                                    duration: tour.duration!,
+                                    schedule: tour.firstSchedule,
+                                    duration: tour.duration,
                                     base_price: double.parse(tour.priceAdult!),
                                     discounted_price: double.parse(
                                       tour.discountedPrice.toString(),
@@ -145,6 +153,10 @@ class _LocationWiseState extends State<LocationWise> {
                         ),
                         SectionTitle(
                           title: 'Houseboats',
+                          onTap: () {
+                            Get.toNamed('/main');
+                            navController.selectedIndex.value = 2;
+                          },
                         ),
                         SizedBox(
                           height: 20,

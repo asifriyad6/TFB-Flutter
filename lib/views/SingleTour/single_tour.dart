@@ -5,11 +5,13 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tfb/controller/tour_controller.dart';
+import 'package:tfb/controller/wishlist_controller.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/SingleTour/tour_summary.dart';
 import 'package:tfb/views/SingleTour/widget/booking_module.dart';
 import 'package:tfb/views/SingleTour/widget/itinerary_expansion.dart';
 import 'package:tfb/widget/custom_button.dart';
+import '../../controller/auth_controller.dart';
 import '../../utils/config.dart';
 import '../../widget/highlights.dart';
 
@@ -24,10 +26,15 @@ class SingleTour extends StatefulWidget {
 
 class _SingleTourState extends State<SingleTour> {
   final controller = Get.find<TourController>();
+  final wishlistController = Get.put(WishlistController());
+  final authController = Get.put(AuthController());
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authController.isAuthenticated.value) {
+        wishlistController.checkWishlist(controller.tour.value.id, null);
+      }
       controller.getTourDetails();
     });
   }
@@ -100,16 +107,29 @@ class _SingleTourState extends State<SingleTour> {
                   ],
                 ),
               ),
-              CustomButton(
-                title: 'Book Now',
-                fullWidth: 180,
-                onTap: () {
-                  Get.bottomSheet(
-                    DatePickerBottomSheet(),
-                    isScrollControlled: true,
-                  );
+              Obx(
+                () {
+                  if (controller.scheduleDate.isEmpty) {
+                    return CustomButton(
+                      fullWidth: width * .5,
+                      color: AppColor.tertiaryColor,
+                      title: "Contact Us",
+                      onTap: () {},
+                    );
+                  } else {
+                    return CustomButton(
+                      title: 'Book Now',
+                      fullWidth: width * .5,
+                      onTap: () {
+                        Get.bottomSheet(
+                          DatePickerBottomSheet(),
+                          isScrollControlled: true,
+                        );
+                      },
+                    );
+                  }
                 },
-              )
+              ),
             ],
           ),
         ),
@@ -163,9 +183,41 @@ class _SingleTourState extends State<SingleTour> {
                                     color: Colors.white.withOpacity(.5),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite_outline),
+                                  child: Obx(
+                                    () {
+                                      return IconButton(
+                                        onPressed: () {
+                                          if (authController
+                                              .isAuthenticated.value) {
+                                            if (!wishlistController
+                                                .isWishlist.value) {
+                                              wishlistController
+                                                      .wishlist.value.tourId =
+                                                  controller.tour.value.id;
+                                              wishlistController
+                                                  .addToWishlist();
+                                            } else {
+                                              wishlistController
+                                                  .removeFromWishlist(
+                                                      controller.tour.value.id,
+                                                      null);
+                                            }
+                                          } else {
+                                            Get.snackbar('Error',
+                                                'You must logged in to add this tour to your wishlist');
+                                          }
+                                        },
+                                        icon: Icon(
+                                          wishlistController.isWishlist.value
+                                              ? Icons.favorite
+                                              : Icons.favorite_outline,
+                                          color: wishlistController
+                                                  .isWishlist.value
+                                              ? Colors.red
+                                              : Colors.black,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -223,8 +275,12 @@ class _SingleTourState extends State<SingleTour> {
                                               TourSummary(
                                                 icon: Icons.timer_outlined,
                                                 title: 'Duration',
-                                                text: controller
-                                                    .tour.value.duration!,
+                                                text: controller.tour.value
+                                                            .duration !=
+                                                        null
+                                                    ? controller
+                                                        .tour.value.duration!
+                                                    : 'Flexible',
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -255,8 +311,11 @@ class _SingleTourState extends State<SingleTour> {
                                                 TourSummary(
                                                   icon: Icons.calendar_month,
                                                   title: 'Tour Date',
-                                                  text:
-                                                      '${DateFormat('yyyy-MM-dd').format(controller.tour.value.firstSchedule!)}',
+                                                  text: controller.tour.value
+                                                              .firstSchedule !=
+                                                          null
+                                                      ? '${DateFormat('yyyy-MM-dd').format(controller.tour.value.firstSchedule!)}'
+                                                      : 'Flexible',
                                                 ),
                                                 SizedBox(
                                                   height: 10,

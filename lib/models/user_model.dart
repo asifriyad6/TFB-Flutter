@@ -11,9 +11,13 @@ class UserModel {
   String? phone;
   String? password;
   String? dob;
+  String? profession;
   String? profilePhoto;
+  String? address;
+  String? city;
   int? isActive;
   String? otp;
+  double? points;
   dynamic createdAt;
   dynamic updatedAt;
 
@@ -24,9 +28,13 @@ class UserModel {
     this.phone,
     this.password,
     this.dob,
+    this.profession,
     this.profilePhoto,
+    this.address,
+    this.city,
     this.isActive,
     this.otp,
+    this.points,
     this.createdAt,
     this.updatedAt,
   });
@@ -37,8 +45,12 @@ class UserModel {
         email: json["email"],
         phone: json["phone"],
         dob: json["dob"],
+        profession: json["profession"],
         profilePhoto: json["profile_photo"],
+        address: json["address"],
+        city: json["city"],
         isActive: json["is_active"],
+        points: json["points"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -49,8 +61,12 @@ class UserModel {
         "email": email,
         "phone": phone,
         "dob": dob,
+        "profession": profession,
         "profile_photo": profilePhoto,
+        "address": address,
+        "city": city,
         "is_active": isActive,
+        "points": points,
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
@@ -72,6 +88,25 @@ class UserModel {
   Map<String, dynamic> toRegister() {
     return {
       'name': name,
+      'phone': phone,
+      'password': password,
+    };
+  }
+
+  Map<String, dynamic> updateProfile() {
+    return {
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'dob': dob,
+      'profession': profession,
+      'address': address,
+      'city': city,
+    };
+  }
+
+  Map<String, dynamic> changePassword() {
+    return {
       'phone': phone,
       'password': password,
     };

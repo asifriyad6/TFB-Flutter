@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/utils/config.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -9,6 +10,7 @@ import 'package:tfb/views/SingleHouseboat/houseboat_dateSelect.dart';
 import 'package:tfb/widget/custom_button.dart';
 import 'package:tfb/widget/highlights.dart';
 
+import '../../controller/wishlist_controller.dart';
 import '../../utils/colors.dart';
 import '../SingleTour/tour_summary.dart';
 
@@ -21,10 +23,15 @@ class SingleHouseboat extends StatefulWidget {
 
 class _SingleHouseboatState extends State<SingleHouseboat> {
   final controller = Get.find<HouseboatController>();
+  final wishlistController = Get.put(WishlistController());
+  final authController = Get.put(AuthController());
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authController.isAuthenticated.value) {
+        wishlistController.checkWishlist(null, controller.houseboat.value.id);
+      }
       controller.getHouseboatDetails();
     });
   }
@@ -81,9 +88,39 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     color: Colors.white.withOpacity(.5),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite_outline),
+                                  child: Obx(
+                                    () => IconButton(
+                                      onPressed: () {
+                                        if (authController
+                                            .isAuthenticated.value) {
+                                          if (!wishlistController
+                                              .isWishlist.value) {
+                                            wishlistController.wishlist.value
+                                                    .houseboatId =
+                                                controller.houseboat.value.id;
+                                            wishlistController.addToWishlist();
+                                          } else {
+                                            wishlistController
+                                                .removeFromWishlist(
+                                                    null,
+                                                    controller
+                                                        .houseboat.value.id);
+                                          }
+                                        } else {
+                                          Get.snackbar('Error',
+                                              'You must logged in to add this houseboat to your wishlist');
+                                        }
+                                      },
+                                      icon: Icon(
+                                        wishlistController.isWishlist.value
+                                            ? Icons.favorite
+                                            : Icons.favorite_outline,
+                                        color:
+                                            wishlistController.isWishlist.value
+                                                ? Colors.red
+                                                : Colors.black,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -425,36 +462,34 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20)),
-                      ),
-                      builder: (context) {
-                        return HouseboatDateSelect();
-                      });
+              Obx(
+                () {
+                  if (controller.scheduleDate.isEmpty) {
+                    return CustomButton(
+                      fullWidth: width * .5,
+                      color: AppColor.tertiaryColor,
+                      title: "Contact Us",
+                      onTap: () {},
+                    );
+                  } else {
+                    return CustomButton(
+                      title: 'Book Now',
+                      fullWidth: width * .36,
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20)),
+                            ),
+                            builder: (context) {
+                              return HouseboatDateSelect();
+                            });
+                      },
+                    );
+                  }
                 },
-                child: Container(
-                  width: width * .35,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    'Book Now',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ),
             ],
           ),

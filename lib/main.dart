@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       // theme: AppTheme.light,
       // darkTheme: AppTheme.dark,
       //themeMode: ThemeMode.light,
-      //home: PaymentSuccess(),
+      //home: OtpVerify(),
       initialRoute: '/splash',
       getPages: [
         GetPage(

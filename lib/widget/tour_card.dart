@@ -8,8 +8,8 @@ class TourCard extends StatelessWidget {
   final String title;
   final String city;
   final String location;
-  final DateTime schedule;
-  final String duration;
+  final DateTime? schedule;
+  final String? duration;
   final double base_price;
   final double discounted_price;
   final VoidCallback onTap;
@@ -19,8 +19,8 @@ class TourCard extends StatelessWidget {
       required this.title,
       required this.city,
       required this.location,
-      required this.schedule,
-      required this.duration,
+      this.schedule,
+      this.duration,
       required this.base_price,
       required this.discounted_price,
       required this.onTap});
@@ -120,7 +120,9 @@ class TourCard extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '${DateFormat('yyyy-MM-dd').format(schedule!)}',
+                            schedule != null
+                                ? (DateFormat('yyyy-MM-dd').format(schedule!))
+                                : 'Flexible Date',
                             style: TextStyle(
                               fontSize: 12,
                             ),
@@ -137,7 +139,7 @@ class TourCard extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            duration,
+                            duration != null ? duration! : '',
                             style: TextStyle(
                               fontSize: 12,
                             ),

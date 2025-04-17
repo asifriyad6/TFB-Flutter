@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tfb/views/HouseboatScreen/shimmer/houseboat_shimmer.dart';
 import 'package:tfb/widget/appbar_bottomborder.dart';
 
 import '../../controller/houseboat_controller.dart';
@@ -39,63 +40,68 @@ class _HouseboatScreenState extends State<HouseboatScreen> {
             },
             icon: const Icon(Icons.arrow_back)),
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await houseboatController.getAllHouseboat();
+        },
+        child: SingleChildScrollView(
+          child: SafeArea(
             child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Text(
-              'All Houseboat Packages',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Obx(() {
-              if (houseboatController.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (houseboatController.houseboats.isEmpty) {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  child: const Text(
-                      textAlign: TextAlign.center,
-                      'No houseboats found in this location. Please check back later.'),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: houseboatController.houseboats.length,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (context, index) {
-                    final houseboat = houseboatController.houseboats[index];
-                    return TourCard1(
-                      title: houseboat.title!,
-                      thumbnail: houseboat.thumbnail!,
-                      schedule: houseboat.firstSchedule,
-                      location: '${houseboat.location}, ${houseboat.city}',
-                      capacity: houseboat.capacity!,
-                      destination: '${houseboat.city}, ${houseboat.country}',
-                      starting_price:
-                          double.tryParse(houseboat.startingPrice ?? '0.0') ??
+              children: [
+                const SizedBox(height: 10),
+                const Text(
+                  'All Houseboat Packages',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Obx(() {
+                  if (houseboatController.isLoading.value) {
+                    return const HouseboatShimmer();
+                  } else if (houseboatController.houseboats.isEmpty) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 20),
+                      child: const Text(
+                          textAlign: TextAlign.center,
+                          'No houseboats found in this location. Please check back later.'),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: houseboatController.houseboats.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        final houseboat = houseboatController.houseboats[index];
+                        return TourCard1(
+                          title: houseboat.title!,
+                          thumbnail: houseboat.thumbnail!,
+                          schedule: houseboat.firstSchedule,
+                          location: '${houseboat.location}, ${houseboat.city}',
+                          capacity: houseboat.capacity!,
+                          destination:
+                              '${houseboat.city}, ${houseboat.country}',
+                          starting_price: double.tryParse(
+                                  houseboat.startingPrice ?? '0.0') ??
                               0.0,
-                      discounted_price:
-                          double.tryParse(houseboat.discountedPrice ?? '0.0') ??
+                          discounted_price: double.tryParse(
+                                  houseboat.discountedPrice ?? '0.0') ??
                               0.0,
-                      onTap: () {
-                        houseboatController.houseboat.value = houseboat;
-                        Get.to(const SingleHouseboat());
+                          onTap: () {
+                            houseboatController.houseboat.value = houseboat;
+                            Get.to(const SingleHouseboat());
+                          },
+                        );
                       },
                     );
-                  },
-                );
-              }
-            }),
-          ],
-        )),
+                  }
+                }),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:http/http.dart' as http;
 import 'package:tfb/models/Houseboat/booking_request.dart';
 import 'package:tfb/models/Tour/booking_request.dart';
+import 'package:tfb/models/wishlist_model.dart';
 import 'package:tfb/utils/endpoints.dart';
 
 import '../Helpers/token_helper.dart';
@@ -198,6 +199,28 @@ class ApiServices {
     );
   }
 
+  static Future<http.Response> updateProfile(UserModel data) async {
+    return await http.post(
+      ApiEndpoints.updateProfile,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': await authToken(),
+      },
+      body: data.updateProfile(),
+    );
+  }
+
+  static Future<http.Response> changePassword(UserModel data) async {
+    return await http.post(
+      ApiEndpoints.changePassword,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': await authToken(),
+      },
+      body: data.changePassword(),
+    );
+  }
+
   static Future<http.Response> getBookings() async {
     return await http.get(
       ApiEndpoints.bookingList,
@@ -205,6 +228,63 @@ class ApiServices {
         'Accept': 'Application/json',
         'Authorization': await authToken(),
       },
+    );
+  }
+
+  static Future<http.Response> getWishlist() async {
+    return await http.get(
+      ApiEndpoints.getWishlist,
+      headers: {
+        'Accept': 'Application/json',
+        'Authorization': await authToken(),
+      },
+    );
+  }
+
+  static Future<http.Response> addToWishlist(
+      Map<String, dynamic> wishlistData) async {
+    return await http.post(
+      ApiEndpoints.addToWishlist,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': await authToken(),
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(wishlistData),
+    );
+  }
+
+  static Future<http.Response> checkWishlist(
+      int? tourId, int? houseboatId) async {
+    Map<String, dynamic> wishlistData = {
+      'tour_id': tourId,
+      'houseboat_id': houseboatId,
+    };
+    return await http.post(
+      ApiEndpoints.checkWishlist,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': await authToken(),
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(wishlistData),
+    );
+  }
+
+  static Future<http.Response> removeWishlist(
+      int? tourId, int? houseboatId) async {
+    Map<String, dynamic> wishlistData = {
+      'tour_id': tourId,
+      'houseboat_id': houseboatId,
+    };
+    return await http.post(
+      ApiEndpoints.removeWishlist,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': await authToken(),
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(wishlistData),
     );
   }
 }

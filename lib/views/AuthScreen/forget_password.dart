@@ -10,32 +10,33 @@ class ForgetPassword extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Forget Password'),
+        title: const Text('Forget Password'),
         leading: IconButton(
-            onPressed: () => Get.back(), icon: Icon(Icons.arrow_back_ios)),
+            onPressed: () => Get.back(),
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: SafeArea(
           child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Text(
+            const Text(
               "Please enter your mobile number and we'll send you a OTP code to reset your password.",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             TextFormField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.smartphone),
                   label: Text('Mobile Number'),
                   hintText: 'Format: 016********'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomButton(
               title: 'Submit',
               onTap: () {},

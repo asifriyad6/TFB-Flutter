@@ -4,8 +4,6 @@ import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/views/SingleHouseboat/houseboat_rooms.dart';
 import 'package:tfb/widget/custom_button.dart';
 
-import '../../utils/colors.dart';
-
 class HouseboatDateSelect extends StatelessWidget {
   const HouseboatDateSelect({super.key});
 
@@ -15,7 +13,7 @@ class HouseboatDateSelect extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     return Container(
       padding: EdgeInsets.all(15),
-      height: height * .22,
+      height: height * .23,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

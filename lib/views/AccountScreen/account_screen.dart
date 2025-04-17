@@ -6,6 +6,9 @@ import 'package:tfb/navigation_menu.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/utils/config.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
+import 'package:tfb/views/AccountScreen/ChangePassword/change_password.dart';
+import 'package:tfb/views/AccountScreen/ProfileScreen/profile_screen.dart';
+import 'package:tfb/views/AccountScreen/WishlistScreen/wishlist_screen.dart';
 import 'package:tfb/views/AccountScreen/widgets/menu_widget.dart';
 import 'package:tfb/views/AuthWrapper/auth_wrapper.dart';
 
@@ -22,7 +25,7 @@ class AccountScreen extends StatelessWidget {
       child: Obx(
         () {
           return authController.isLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : Scaffold(
@@ -42,9 +45,9 @@ class AccountScreen extends StatelessWidget {
                       onPressed: () {
                         navController.selectedIndex.value = 0;
                       },
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                     ),
-                    title: Text(
+                    title: const Text(
                       'Account',
                       style: TextStyle(fontSize: 18),
                     ),
@@ -52,6 +55,7 @@ class AccountScreen extends StatelessWidget {
                   body: SafeArea(
                     child: Column(
                       children: [
+                        SizedBox(height: 20),
                         Container(
                           width: double.infinity,
                           child: Column(
@@ -62,28 +66,31 @@ class AccountScreen extends StatelessWidget {
                                   return authController.isUploading.value
                                       ? CircularProgressIndicator(
                                           color: AppColor.primaryColor,
-                                          padding: EdgeInsets.all(52),
+                                          padding: const EdgeInsets.all(52),
                                         )
                                       : Stack(
                                           children: [
                                             Container(
                                               width: 160,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
                                               child: ClipOval(
                                                 child: CircleAvatar(
                                                   child: CachedNetworkImage(
+                                                    width: 160,
+                                                    height: 160,
                                                     fit: BoxFit.cover,
                                                     imageUrl:
                                                         '${AppConfig.profileImage}/${authController.profileImageUrl}',
                                                     placeholder: (context,
                                                             url) =>
-                                                        Center(
+                                                        const Center(
                                                             child:
                                                                 CircularProgressIndicator()),
                                                     errorWidget: (context, url,
                                                             error) =>
-                                                        Icon(Icons
+                                                        const Icon(Icons
                                                             .error), // Error icon
                                                   ),
                                                   minRadius: 70,
@@ -104,7 +111,7 @@ class AccountScreen extends StatelessWidget {
                                                   onPressed: () {
                                                     authController.pickImage();
                                                   },
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                     Icons.edit,
                                                     size: 18,
                                                     color: Colors.white,
@@ -116,71 +123,82 @@ class AccountScreen extends StatelessWidget {
                                         );
                                 },
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               Text(
                                 //'Asif Iqbal Riyad',
                                 authController.userModel.value.name!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(authController.userModel.value.phone!),
-                              SizedBox(height: 10),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: AppColor.secondaryColor,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFFA534),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      '9740 Points',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
+                              const SizedBox(height: 10),
+                              authController.userModel.value.points != null
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      width: 140,
+                                      decoration: BoxDecoration(
+                                        color: AppColor.secondaryColor,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: Color(0xFFFFA534),
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            '${authController.userModel.value.points ?? '0'} Points',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14),
+                                          )
+                                        ],
+                                      ),
                                     )
-                                  ],
-                                ),
-                              ),
+                                  : const SizedBox(),
                             ],
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Container(
                           height: 10,
                           color: AppColor.secondaryColor,
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         AccountMenu(
                             icon: Icons.person,
                             title: 'Profile',
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(const ProfileScreen());
+                            },
                             iconBg: Colors.blueAccent),
                         AccountMenu(
                             icon: Icons.list,
                             title: 'Bookings',
                             onTap: () {
-                              Get.to(AllBookings());
+                              Get.to(const AllBookings());
                             },
                             iconBg: Colors.lightGreen),
                         AccountMenu(
                             icon: Icons.favorite_outline,
                             title: 'Wishlist',
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(const WishlistScreen());
+                            },
                             iconBg: Colors.redAccent),
                         AccountMenu(
                             icon: Icons.lock_outline,
                             title: 'Change Password',
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(const ChangePassword());
+                            },
                             iconBg: Colors.orangeAccent),
                         AccountMenu(
                             icon: Icons.call,
@@ -192,12 +210,12 @@ class AccountScreen extends StatelessWidget {
                             title: 'Logout',
                             onTap: () {
                               Get.dialog(AlertDialog(
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(0))),
                                 backgroundColor: Colors.white,
-                                content: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                content: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 5),
                                   child: Text(
                                     "Are you sure you want to logout?",
@@ -212,7 +230,7 @@ class AccountScreen extends StatelessWidget {
                                   CustomButton(
                                       title: 'NO',
                                       onTap: () => Get.back(result: false)),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   CustomButton(
                                       title: 'YES',
                                       color: AppColor.tertiaryColor,

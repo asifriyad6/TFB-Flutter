@@ -59,6 +59,8 @@ dependencies:
   pinput:
     #Image Picker
   image_picker:
+    #Shimmer
+  shimmer:
 
 dev_dependencies:
   flutter_test:
@@ -70,9 +72,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons:
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/tfb_icon.png"
 
 # The following section is specific to Flutter packages.
 flutter:

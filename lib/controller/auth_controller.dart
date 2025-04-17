@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:tfb/utils/endpoints.dart';
@@ -15,6 +18,7 @@ import '../utils/config.dart';
 import '../models/user_model.dart';
 import '../services/api_services.dart';
 import '../services/shared_services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class AuthController extends GetxController {
   final RxBool loadingLogin = false.obs;
@@ -36,12 +40,32 @@ class AuthController extends GetxController {
   File? selectedImage;
   final ImagePicker _picker = ImagePicker();
   var isUploading = false.obs;
+  var countdown = 300.obs;
+  Timer? _timer;
+  var selectedDate = Rx<DateTime?>(null);
+  final TextEditingController userName = TextEditingController(text: '');
+  final TextEditingController userPhone = TextEditingController(text: '');
+  final TextEditingController userEmail = TextEditingController(text: '');
+  final TextEditingController userDob = TextEditingController(text: '');
+  final TextEditingController userAddress = TextEditingController(text: '');
+  final TextEditingController userCity = TextEditingController(text: '');
+  final TextEditingController userProfession = TextEditingController(text: '');
 
   @override
   void onInit() {
     super.onInit();
     checkToken();
     getUserProfilePhoto();
+  }
+
+  void populateUserControllers() {
+    userName.text = userModel.value.name ?? '';
+    userPhone.text = userModel.value.phone ?? '';
+    userEmail.text = userModel.value.email ?? '';
+    userAddress.text = userModel.value.address ?? '';
+    userCity.text = userModel.value.city ?? '';
+    userProfession.text = userModel.value.profession ?? '';
+    userDob.text = userModel.value.dob ?? '';
   }
 
   checkToken() async {
@@ -55,30 +79,33 @@ class AuthController extends GetxController {
     if (userJson != null) {
       final userMap = jsonDecode(userJson);
       userModel.value = UserModel.fromJson(userMap);
+      populateUserControllers();
       isAuthenticated.value = true;
     }
   }
 
   login() async {
     try {
-      if (userModel.value.phone == null || userModel.value.password == null) {
+      if (userModel.value.phone == null ||
+          userModel.value.password == null ||
+          userModel.value.phone!.length < 11) {
         Get.snackbar('Error', 'Please provide valid credentials');
         return;
       }
       loadingLogin.value = true;
       final response = await ApiServices.login(userModel.value);
-      loadingLogin.value = false;
       final decode = jsonDecode(response.body);
       if (response.statusCode != 200) {
         Get.snackbar('Error', decode['message']);
+        loadingLogin.value = false;
         return;
       }
       await SharedServices.setData(SetType.string, 'token', decode['token']);
       await SharedServices.setData(
           SetType.string, 'user', jsonEncode(decode['data']));
       userModel.value = UserModel.fromJson(decode['data']);
-      profileImageUrl.value = userModel.value.profilePhoto!;
       update();
+      loadingLogin.value = false;
       Get.offAllNamed('/main');
     } catch (e) {
       loadingLogin.value = false;
@@ -99,7 +126,7 @@ class AuthController extends GetxController {
     Get.offAllNamed('/main');
   }
 
-  sendOtp() async {
+  sendOtp(bool isResend) async {
     try {
       if (userModel.value.phone == '' || userModel.value.phone!.length < 11) {
         Get.snackbar('Error', 'Phone number must be 11 digit');
@@ -114,12 +141,16 @@ class AuthController extends GetxController {
         Get.snackbar('Error', decode['message']);
         return;
       }
-      Get.to(OtpVerify());
+      if (isResend == true) {
+        startTimer();
+        Get.snackbar('Message', 'OTP code resent');
+      } else {
+        Get.to(const OtpVerify());
+        startTimer();
+      }
     } catch (e) {
-      print(userModel.value.phone);
       isLoading.value = false;
-      print(e);
-      Get.snackbar('Error', 'Something went wrong. Please try again.');
+      Get.snackbar('Error', '$e');
     }
   }
 
@@ -137,7 +168,7 @@ class AuthController extends GetxController {
         Get.snackbar('Error', decode['message']);
         return;
       }
-      Get.to(SaveCustomer());
+      Get.to(const SaveCustomer());
     } catch (e) {
       loadingLogin.value = false;
       Get.snackbar('Error', 'Something went wrong. Please try again.');
@@ -192,6 +223,65 @@ class AuthController extends GetxController {
     }
   }
 
+  updateProfile() async {
+    try {
+      if (userModel.value.name == null || userModel.value.phone == null) {
+        Get.snackbar('Error', 'Please provide all required data');
+        return;
+      }
+      userModel.value.email = userModel.value.email ?? '';
+      userModel.value.dob = selectedDate.value.toString() ?? '';
+      userModel.value.address = userModel.value.address ?? '';
+      userModel.value.city = userModel.value.city ?? '';
+      userModel.value.profession = userModel.value.profession ?? '';
+      isLoading.value = true;
+      final response = await ApiServices.updateProfile(userModel.value);
+      isLoading.value = false;
+      final decode = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        Get.snackbar('Error', decode['message']);
+        return;
+      }
+      await SharedServices.setData(
+          SetType.string, 'user', jsonEncode(decode['data']));
+      userModel.value = UserModel.fromJson(decode['data']);
+      update();
+      Get.back();
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal server error');
+    }
+  }
+
+  void setSelectedDob(DateTime date) {
+    selectedDate.value = date;
+    userDob.text = DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  void changePassword() async {
+    try {
+      if (userModel.value.password == null || userModel.value.phone == null) {
+        Get.snackbar('Error', 'Please provide all required data');
+        return;
+      }
+      isLoading.value = true;
+      final response = await ApiServices.changePassword(userModel.value);
+      final decode = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        isLoading.value = false;
+        Get.snackbar('Error', decode['message']);
+        return;
+      }
+      isLoading.value = false;
+      Get.snackbar(
+          'Message', 'Password changed successfully. Please login again.');
+      logout();
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal server error.');
+    }
+  }
+
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -211,16 +301,14 @@ class AuthController extends GetxController {
     var length = await imageFile.length();
     var multipartFile = http.MultipartFile('profile_picture', stream, length,
         filename: basename(imageFile.path));
-
     request.files.add(multipartFile);
-
     var response = await request.send();
-
     if (response.statusCode == 200) {
       response.stream.transform(utf8.decoder).listen((value) {
         var jsonResponse = json.decode(value);
-        profileImageUrl.value =
-            jsonResponse['profile_picture_url']; // Update avatar
+        DefaultCacheManager()
+            .removeFile('${AppConfig.profileImage}/$profileImageUrl' ?? "");
+        profileImageUrl.value = jsonResponse['profile_picture_url'];
       });
     } else {
       print("Upload failed: ${response.reasonPhrase}");
@@ -235,10 +323,31 @@ class AuthController extends GetxController {
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
 
-      // Assuming the profile photo is stored under the key 'profile_photo'
       //return userData['profile_photo'];
       profileImageUrl.value = userData['profile_photo'];
     }
     return null; // Return null if user data is not found
+  }
+
+  void startTimer() {
+    _timer?.cancel(); // Cancel any existing timer
+    countdown.value = 300; // Reset to 5 minutes
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (countdown.value > 0) {
+        countdown.value--;
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void resetTimer() {
+    startTimer(); // Restart timer when resend is triggered
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 }

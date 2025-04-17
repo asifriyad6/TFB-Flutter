@@ -17,10 +17,18 @@ class ApiEndpoints {
   static Uri login = Uri.parse('$apiUrl/login');
   static Uri sendOtpRegister = Uri.parse('$apiUrl/register-sendotp');
   static Uri verifyOtp = Uri.parse('$apiUrl/register-verifyotp');
+  static Uri sendOtpPssReset = Uri.parse('$apiUrl/forgetpass-sendotp');
+  static Uri verifyOtpPassReset = Uri.parse('$apiUrl/forgetpass-verifyotp');
   static Uri register = Uri.parse('$apiUrl/register');
+  static Uri updateProfile = Uri.parse('$apiUrl/update-profile');
+  static Uri changePassword = Uri.parse('$apiUrl/change-password');
   static Uri profilePictureUpload = Uri.parse('$apiUrl/upload-profile-photo');
   static Uri logout = Uri.parse('$apiUrl/logout');
   static Uri tourBooking = Uri.parse('$apiUrl/tour-booking');
+  static Uri addToWishlist = Uri.parse('$apiUrl/wishlist/add');
+  static Uri checkWishlist = Uri.parse('$apiUrl/wishlist/check');
+  static Uri removeWishlist = Uri.parse('$apiUrl/wishlist/remove');
+  static Uri getWishlist = Uri.parse('$apiUrl/wishlist');
 
   static Uri houseboatRoomList = Uri.parse('$apiUrl/houseboat-room-suggestion');
 }

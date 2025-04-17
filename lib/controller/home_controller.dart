@@ -12,6 +12,8 @@ class HomeController extends GetxController {
   var tours = <TourModel>[].obs;
   RxBool isLoading = RxBool(false);
   RxBool tourLoading = RxBool(false);
+  RxBool locationLoading = RxBool(false);
+  RxBool carouselLoading = RxBool(false);
 
   @override
   onInit() {
@@ -23,9 +25,11 @@ class HomeController extends GetxController {
   }
 
   getBanner() async {
+    carouselLoading.value = true;
     final response = await ApiServices.getBanner();
     if (response.statusCode == 200) {
       banner.value = bannerImagesFromJson(response.body);
+      carouselLoading.value = false;
       update();
     } else {
       Get.snackbar('Error', 'Internal Server Error');
@@ -33,9 +37,11 @@ class HomeController extends GetxController {
   }
 
   getLocation() async {
+    locationLoading.value = true;
     final response = await ApiServices.getLocation();
     if (response.statusCode == 200) {
       locations.value = locationModelFromJson(response.body);
+      locationLoading.value = false;
       update();
     } else {
       Get.snackbar('Error', 'Internal Server Error');

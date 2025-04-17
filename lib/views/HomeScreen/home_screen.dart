@@ -7,12 +7,18 @@ import 'package:tfb/controller/home_controller.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/controller/tour_controller.dart';
 import 'package:tfb/utils/config.dart';
+import 'package:tfb/views/HomeScreen/shimmer/carousel_shimmer.dart';
+import 'package:tfb/views/HomeScreen/shimmer/location_shimmer.dart';
+import 'package:tfb/views/HomeScreen/widget/carousel_banner.dart';
 import 'package:tfb/views/HomeScreen/widget/location_widget.dart';
+import 'package:tfb/views/HouseboatScreen/shimmer/houseboat_shimmer.dart';
 import 'package:tfb/views/SingleHouseboat/single_houseboat.dart';
 import 'package:tfb/views/SingleTour/single_tour.dart';
+import 'package:tfb/views/TourScreen/shimmer/tour_card.dart';
 import 'package:tfb/widget/section_title.dart';
 import 'package:tfb/widget/tour_card.dart';
 import 'package:tfb/widget/tour_card_1.dart';
+import '../../navigation_menu.dart';
 import '../SearchScreen/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,6 +27,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     final controller = Get.put(HomeController());
+    final navController = Get.put(NavigationController());
     final houseboatController = Get.put(HouseboatController());
     final tourController = Get.put(TourController());
     final authController = Get.put(AuthController());
@@ -107,49 +114,9 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(height: 20),
                     Obx(
                       () {
-                        return controller.banner.isEmpty
-                            ? SizedBox(height: height * .2)
-                            : CarouselSlider.builder(
-                                itemCount: controller.banner.length,
-                                itemBuilder: (context, index, realIndex) {
-                                  return Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(0),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        imageUrl:
-                                            '${AppConfig.bannerImage}/${controller.banner[index].name!}',
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error), // Error icon
-                                      ),
-                                    ),
-                                  );
-                                },
-                                options: CarouselOptions(
-                                  height: height * .2,
-                                  aspectRatio: 16 / 9,
-                                  viewportFraction: 0.8,
-                                  initialPage: 0,
-                                  enableInfiniteScroll: true,
-                                  reverse: false,
-                                  autoPlay: false,
-                                  autoPlayInterval: Duration(seconds: 3),
-                                  autoPlayAnimationDuration:
-                                      Duration(milliseconds: 800),
-                                  autoPlayCurve: Curves.fastOutSlowIn,
-                                  enlargeCenterPage: true,
-                                  enlargeFactor: 0.0,
-                                  scrollDirection: Axis.horizontal,
-                                ),
-                              );
+                        return controller.carouselLoading.value
+                            ? const CarouselShimmer()
+                            : CarouselBanner(banner: controller.banner);
                       },
                     ),
                     SizedBox(
@@ -161,19 +128,26 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    LocationWidget(),
+                    Obx(
+                      () => controller.locationLoading.value
+                          ? const LocationShimmer()
+                          : const LocationWidget(),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    SectionTitle(title: 'Upcoming Houseboat'),
+                    SectionTitle(
+                      title: 'Upcoming Houseboat',
+                      onTap: () {
+                        navController.selectedIndex.value = 2;
+                      },
+                    ),
                     SizedBox(
                       height: 20,
                     ),
                     Obx(() {
                       if (controller.isLoading.value) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const HouseboatShimmer();
                       } else if (controller.houseboats.isEmpty) {
                         return Container(
                           padding: EdgeInsets.symmetric(
@@ -214,21 +188,24 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    SectionTitle(title: 'Upcoming Tours'),
-                    SizedBox(
+                    SectionTitle(
+                      title: 'Upcoming Tours',
+                      onTap: () {
+                        navController.selectedIndex.value = 1;
+                      },
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
                     Obx(
                       () {
                         if (controller.tourLoading.value) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const TourCardShimmer();
                         } else if (controller.tours.isEmpty) {
                           return Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 20),
-                            child: Text(
+                            child: const Text(
                                 textAlign: TextAlign.center,
                                 'No tours are scheduled at the moment. Please check back later.'),
                           );
