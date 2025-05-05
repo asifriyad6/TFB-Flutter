@@ -66,7 +66,7 @@ class _HouseboatScreenState extends State<HouseboatScreen> {
                           horizontal: 50, vertical: 20),
                       child: const Text(
                           textAlign: TextAlign.center,
-                          'No houseboats found in this location. Please check back later.'),
+                          'No houseboats found. Please check back later.'),
                     );
                   } else {
                     return ListView.builder(

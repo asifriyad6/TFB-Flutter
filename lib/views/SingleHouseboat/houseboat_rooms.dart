@@ -43,23 +43,34 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
           }
           return Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                ),
-                child: CachedNetworkImage(
-                  width: double.infinity,
-                  height: height * .4,
-                  fit: BoxFit.cover,
-                  imageUrl:
-                      '${AppConfig.houseboatImage}/${controller.houseboat.value.thumbnail}',
-                  placeholder: (context, url) =>
-                      Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>
-                      Icon(Icons.error), // Error icon
-                ),
+              Container(
+                height: height * .5,
+                decoration: BoxDecoration(
+                    color: Color(0xFFA0E7E5),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(
+                        30,
+                      ),
+                    )),
               ),
+              // ClipRRect(
+              //   borderRadius: BorderRadius.only(
+              //     bottomRight: Radius.circular(30),
+              //     bottomLeft: Radius.circular(30),
+              //   ),
+              //   child: CachedNetworkImage(
+              //     width: double.infinity,
+              //     height: height * .4,
+              //     fit: BoxFit.cover,
+              //     imageUrl:
+              //         '${AppConfig.houseboatImage}/${controller.houseboat.value.thumbnail}',
+              //     placeholder: (context, url) =>
+              //         Center(child: CircularProgressIndicator()),
+              //     errorWidget: (context, url, error) =>
+              //         Icon(Icons.error), // Error icon
+              //   ),
+              // ),
               SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,16 +113,21 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
                                     left: leftPosition,
                                     top: topPosition,
                                     child: GestureDetector(onTap: () {
-                                      if (controller.selectedCabins.any(
+                                      if (cabin.isAvailable == 0) {
+                                        Get.snackbar('Info',
+                                            'This Cabin is Unavailable!');
+                                      } else if (cabin.isBooked!) {
+                                        Get.snackbar('Info',
+                                            'This Cabin is already booked!');
+                                      } else if (controller.selectedCabins.any(
                                           (selected) =>
                                               selected.cabinId == cabin.id)) {
                                         controller.selectCabin(cabin.id!);
-                                      } else if (!cabin.isBooked!) {
-                                        Get.dialog(
-                                            CabinDetailsDialog(cabin: cabin));
                                       } else {
-                                        Get.snackbar('Info',
-                                            'This Cabin is already booked!');
+                                        Future.microtask(() {
+                                          Get.dialog(
+                                              CabinDetailsDialog(cabin: cabin));
+                                        });
                                       }
                                     }, child: Obx(
                                       () {
@@ -125,9 +141,11 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
                                           decoration: BoxDecoration(
                                             color: cabin.isBooked!
                                                 ? Colors.red
-                                                : isSelected
-                                                    ? Colors.blueAccent
-                                                    : Colors.green,
+                                                : cabin.isAvailable == 0
+                                                    ? Colors.grey
+                                                    : isSelected
+                                                        ? Colors.blueAccent
+                                                        : Colors.green,
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             boxShadow: [

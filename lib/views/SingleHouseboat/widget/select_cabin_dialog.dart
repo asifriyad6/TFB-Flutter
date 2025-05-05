@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/models/Houseboat/cabin_details.dart';
-import 'package:tfb/utils/colors.dart';
 
 class CabinDetailsDialog extends StatelessWidget {
   final HouseboatCabin cabin;
@@ -13,7 +12,9 @@ class CabinDetailsDialog extends StatelessWidget {
     final controller = Get.put(HouseboatController());
     final childPrice = double.parse(cabin.childPrice!);
     final basePrice = double.parse(cabin.discountedPrice!);
-    controller.totalPrice.value = basePrice;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.totalPrice.value = basePrice;
+    });
     return AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

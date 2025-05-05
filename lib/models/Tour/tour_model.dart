@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final tourModel = tourModelFromJson(jsonString);
-
 import 'dart:convert';
 
 List<TourModel> tourModelFromJson(String str) =>
@@ -20,7 +16,7 @@ class TourModel {
   String? location;
   String? city;
   String? country;
-  int? discountedPrice;
+  String? discountedPrice;
   DateTime? firstSchedule;
   String? duration;
 

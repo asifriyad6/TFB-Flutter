@@ -49,6 +49,7 @@ class HouseboatCabin {
   int? rowPosition;
   int? isAc;
   bool? isBooked;
+  int? isAvailable;
 
   HouseboatCabin({
     this.id,
@@ -64,6 +65,7 @@ class HouseboatCabin {
     this.rowPosition,
     this.isAc,
     this.isBooked,
+    this.isAvailable,
   });
 
   factory HouseboatCabin.fromJson(Map<String, dynamic> json) => HouseboatCabin(
@@ -80,6 +82,7 @@ class HouseboatCabin {
         rowPosition: json["row_position"],
         isAc: json["isAC"],
         isBooked: json["is_booked"],
+        isAvailable: json["is_available"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +99,6 @@ class HouseboatCabin {
         "row_position": rowPosition,
         "isAC": isAc,
         "is_booked": isBooked,
+        "is_available": isAvailable,
       };
 }

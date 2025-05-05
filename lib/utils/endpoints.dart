@@ -29,6 +29,7 @@ class ApiEndpoints {
   static Uri checkWishlist = Uri.parse('$apiUrl/wishlist/check');
   static Uri removeWishlist = Uri.parse('$apiUrl/wishlist/remove');
   static Uri getWishlist = Uri.parse('$apiUrl/wishlist');
+  static Uri getGeneralSettings = Uri.parse('$apiUrl/general-settings');
 
   static Uri houseboatRoomList = Uri.parse('$apiUrl/houseboat-room-suggestion');
 }

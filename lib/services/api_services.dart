@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:http/http.dart' as http;
 import 'package:tfb/models/Houseboat/booking_request.dart';
 import 'package:tfb/models/Tour/booking_request.dart';
-import 'package:tfb/models/wishlist_model.dart';
+import 'package:tfb/utils/config.dart';
 import 'package:tfb/utils/endpoints.dart';
 
 import '../Helpers/token_helper.dart';
@@ -25,6 +25,17 @@ class ApiServices {
     return await http.get(
       ApiEndpoints.bannerImages,
       headers: {
+        'X-App-Platform': getAppPlatform(),
+        'Accept': 'Application/json',
+      },
+    );
+  }
+
+  static Future<http.Response> getGeneralSettings() async {
+    return await http.get(
+      ApiEndpoints.getGeneralSettings,
+      headers: {
+        'X-App-Platform': getAppPlatform(),
         'Accept': 'Application/json',
       },
     );
@@ -34,6 +45,7 @@ class ApiServices {
     return await http.get(
       ApiEndpoints.locationList,
       headers: {
+        'X-App-Platform': getAppPlatform(),
         'Accept': 'Application/json',
       },
     );
@@ -43,6 +55,7 @@ class ApiServices {
     return await http.get(
       ApiEndpoints.houseboatList,
       headers: {
+        'X-App-Platform': getAppPlatform(),
         'Accept': 'Application/json',
       },
     );

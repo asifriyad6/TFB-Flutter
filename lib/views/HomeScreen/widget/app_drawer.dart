@@ -4,6 +4,8 @@ import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
 import 'package:tfb/views/AuthScreen/login_screen.dart';
+import 'package:tfb/views/GeneralSettings/privacy_policy.dart';
+import 'package:tfb/views/GeneralSettings/terms_conditions.dart';
 import '../../../navigation_menu.dart';
 import '../../../utils/config.dart';
 
@@ -114,7 +116,16 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     Icons.description,
                     'Terms & Conditions',
-                    () {},
+                    () {
+                      Get.to(const TermsConditions());
+                    },
+                  ),
+                  _buildDrawerItem(
+                    Icons.document_scanner,
+                    'Privacy & Policy',
+                    () {
+                      Get.to(const PrivacyPolicy());
+                    },
                   ),
                   _buildDrawerItem(
                     Icons.call,

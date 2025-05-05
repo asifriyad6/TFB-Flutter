@@ -15,8 +15,8 @@ class paymentController extends GetxController {
             currency: SSLCurrencyType.BDT,
             product_category: "Food",
             sdkType: SSLCSdkType.TESTBOX,
-            store_id: "asifi67bb665220063",
-            store_passwd: "asifi67bb665220063@ssl",
+            store_id: "trave5c91e88edcb51",
+            store_passwd: "trave5c91e88edcb51@ssl",
             total_amount: amount,
             tran_id: tranId));
     // Sslcommerz sslcommerz = Sslcommerz(

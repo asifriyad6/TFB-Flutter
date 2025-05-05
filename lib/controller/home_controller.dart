@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:tfb/models/Tour/tour_model.dart';
 import 'package:tfb/models/banner_images.dart';
+import 'package:tfb/models/general_settings.dart';
 import 'package:tfb/models/houseboat_model.dart';
 import 'package:tfb/models/location_model.dart';
 import 'package:tfb/services/api_services.dart';
@@ -10,6 +11,7 @@ class HomeController extends GetxController {
   var banner = <BannerImages>[].obs;
   var locations = <LocationModel>[].obs;
   var tours = <TourModel>[].obs;
+  var generalSettings = GeneralSettings().obs;
   RxBool isLoading = RxBool(false);
   RxBool tourLoading = RxBool(false);
   RxBool locationLoading = RxBool(false);
@@ -18,10 +20,21 @@ class HomeController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    getGeneralData();
     getBanner();
     getLocation();
     getHouseboat();
     getTour();
+  }
+
+  getGeneralData() async {
+    final response = await ApiServices.getGeneralSettings();
+    if (response.statusCode == 200) {
+      generalSettings.value = generalSettingsFromJson(response.body);
+      update();
+    } else {
+      Get.snackbar('Error', response.body);
+    }
   }
 
   getBanner() async {
