@@ -44,6 +44,7 @@ class HouseboatCabin {
   String? bedSize;
   String? basePrice;
   String? childPrice;
+  String? bookingPrice;
   String? discountedPrice;
   int? colPosition;
   int? rowPosition;
@@ -60,6 +61,7 @@ class HouseboatCabin {
     this.bedSize,
     this.basePrice,
     this.childPrice,
+    this.bookingPrice,
     this.discountedPrice,
     this.colPosition,
     this.rowPosition,
@@ -77,6 +79,7 @@ class HouseboatCabin {
         bedSize: json["bed_size"],
         basePrice: json["base_price"],
         childPrice: json["child_price"],
+        bookingPrice: json["booking_price"],
         discountedPrice: json["discounted_price"],
         colPosition: json["col_position"],
         rowPosition: json["row_position"],
@@ -94,6 +97,7 @@ class HouseboatCabin {
         "bed_size": bedSize,
         "base_price": basePrice,
         "child_price": childPrice,
+        "booking_price": bookingPrice,
         "discounted_price": discountedPrice,
         "col_position": colPosition,
         "row_position": rowPosition,

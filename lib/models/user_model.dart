@@ -111,4 +111,11 @@ class UserModel {
       'password': password,
     };
   }
+
+  Map<String, dynamic> resetPassword() {
+    return {
+      'phone': phone,
+      'password': password,
+    };
+  }
 }

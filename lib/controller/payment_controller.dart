@@ -10,7 +10,7 @@ class paymentController extends GetxController {
   void sslcommerz(double amount, String tranId) async {
     Sslcommerz sslcommerz = Sslcommerz(
         initializer: SSLCommerzInitialization(
-            //   ipn_url: "www.ipnurl.com",
+            ipn_url: "https://api.travelfreak.com.bd/api/payment/ssl-ipn",
             multi_card_name: "visa,master,bkash",
             currency: SSLCurrencyType.BDT,
             product_category: "Food",

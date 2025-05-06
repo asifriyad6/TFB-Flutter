@@ -171,9 +171,19 @@ class ApiServices {
   }
 
   static Future<http.Response> sendOtpRegister(String phone) async {
-    print(phone);
     return await http.post(
       ApiEndpoints.sendOtpRegister,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({'phone': phone}),
+    );
+  }
+
+  static Future<http.Response> sendOtpPassReset(String phone) async {
+    return await http.post(
+      ApiEndpoints.sendOtpPssReset,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -185,6 +195,16 @@ class ApiServices {
   static Future<http.Response> verifyOtp(UserModel data) async {
     return await http.post(
       ApiEndpoints.verifyOtp,
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: data.verifyOtp(),
+    );
+  }
+
+  static Future<http.Response> verifyOtpPssReset(UserModel data) async {
+    return await http.post(
+      ApiEndpoints.verifyOtpPassReset,
       headers: {
         'Accept': 'application/json',
       },
@@ -231,6 +251,18 @@ class ApiServices {
         'Authorization': await authToken(),
       },
       body: data.changePassword(),
+    );
+  }
+
+  static Future<http.Response> passwordReset(UserModel data) async {
+    print('Sending body: ${jsonEncode(data.resetPassword())}');
+    return await http.post(
+      ApiEndpoints.resetPassword,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data.resetPassword()),
     );
   }
 

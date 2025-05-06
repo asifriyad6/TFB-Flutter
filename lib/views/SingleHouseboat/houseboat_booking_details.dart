@@ -9,6 +9,7 @@ import 'package:tfb/widget/custom_button.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/config.dart';
+import '../../widget/custom_appbar.dart';
 
 class HouseboatBookingDetails extends StatelessWidget {
   const HouseboatBookingDetails({super.key});
@@ -17,6 +18,8 @@ class HouseboatBookingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(HouseboatController());
     controller.isBookingAmount.value = false;
+    final totalBookingAmt = controller.selectedCabins
+        .fold(0.0, (sum, item) => sum + item.bookingPrice);
     final houseboat = controller.houseboat.value;
     final cabinTotal = controller.selectedCabins
         .fold(0.0, (sum, room) => sum + room.basePrice);
@@ -31,8 +34,8 @@ class HouseboatBookingDetails extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Review Your Booking'),
+      appBar: const CustomAppBar(
+        title: 'Review Your Booking',
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -405,31 +408,34 @@ class HouseboatBookingDetails extends StatelessWidget {
                         );
                       },
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Obx(
-                          () {
-                            return Transform.scale(
-                              scale: .8,
-                              child: Switch.adaptive(
-                                inactiveTrackColor: Colors.white,
-                                activeColor: AppColor.primaryColor,
-                                value: controller.isBookingAmount.value,
-                                onChanged: (value) {
-                                  controller.isBookingAmount.value = value;
-                                  controller.payBookingAmt();
+                    const SizedBox(height: 10),
+                    totalBookingAmt > 1
+                        ? Row(
+                            children: [
+                              Obx(
+                                () {
+                                  return Transform.scale(
+                                    scale: .8,
+                                    child: Switch.adaptive(
+                                      inactiveTrackColor: Colors.white,
+                                      activeColor: AppColor.primaryColor,
+                                      value: controller.isBookingAmount.value,
+                                      onChanged: (value) {
+                                        controller.isBookingAmount.value =
+                                            value;
+                                        controller.payBookingAmt();
+                                      },
+                                    ),
+                                  );
                                 },
                               ),
-                            );
-                          },
-                        ),
-                        Text(
-                          'Pay Booking Amount',
-                          style: TextStyle(fontSize: 16),
-                        )
-                      ],
-                    ),
+                              Text(
+                                'Pay Booking Amount',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -438,7 +444,7 @@ class HouseboatBookingDetails extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        height: 70,
+        height: 65,
         color: Colors.white,
         elevation: 5,
         shadowColor: Colors.black.withOpacity(.3),

@@ -19,6 +19,7 @@ class ApiEndpoints {
   static Uri verifyOtp = Uri.parse('$apiUrl/register-verifyotp');
   static Uri sendOtpPssReset = Uri.parse('$apiUrl/forgetpass-sendotp');
   static Uri verifyOtpPassReset = Uri.parse('$apiUrl/forgetpass-verifyotp');
+  static Uri resetPassword = Uri.parse('$apiUrl/password-reset');
   static Uri register = Uri.parse('$apiUrl/register');
   static Uri updateProfile = Uri.parse('$apiUrl/update-profile');
   static Uri changePassword = Uri.parse('$apiUrl/change-password');

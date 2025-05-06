@@ -96,15 +96,12 @@ class HouseboatController extends GetxController {
   }
 
   void selectCabin(int cabinId) {
-    // Find the selected cabin from the cabins list
     var cabin = houseboatCabins.firstWhere((c) => c.id == cabinId);
-    // Check if the cabin is already in selectedCabins
     var existingCabinIndex =
         selectedCabins.indexWhere((c) => c.cabinId == cabinId);
     if (existingCabinIndex != -1) {
       selectedCabins.removeAt(existingCabinIndex);
     } else {
-      // Store selected cabin in CabinSelection model
       selectedCabins.add(CabinSelection(
         boatId: houseboat.value.id!,
         cabinId: cabinId,
@@ -112,11 +109,10 @@ class HouseboatController extends GetxController {
         children: childCount.value,
         basePrice: double.parse(cabin.basePrice!),
         childPrice: double.parse(cabin.childPrice!),
-        bookingPrice: 1000.0,
+        bookingPrice: double.parse(cabin.bookingPrice!),
         totalAmount: totalPrice.value,
       ));
     }
-    // Update total amount
     calculateTotalAmount();
     childCount.value = 0;
     totalPrice.value = 0.0;
@@ -130,8 +126,12 @@ class HouseboatController extends GetxController {
   bookingPrice() {
     var cabinTotal =
         selectedCabins.fold(0.0, (sum, item) => sum + item.bookingPrice);
-    var childTotal =
-        selectedCabins.fold(0.0, (sum, item) => sum + item.childPrice);
+    var childTotal = selectedCabins.fold(0.0, (sum, item) {
+      if (item.children > 0) {
+        return sum + (item.childPrice * item.children);
+      }
+      return sum;
+    });
     grandTotal.value = cabinTotal + childTotal;
   }
 

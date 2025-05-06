@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:tfb/utils/endpoints.dart';
+import 'package:tfb/views/AuthScreen/login_screen.dart';
 import 'package:tfb/views/AuthScreen/otp_verify.dart';
 import 'package:tfb/views/AuthScreen/save_customer.dart';
 import '../Helpers/token_helper.dart';
@@ -19,6 +20,10 @@ import '../models/user_model.dart';
 import '../services/api_services.dart';
 import '../services/shared_services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
+import '../views/AccountScreen/ChangePassword/change_password.dart';
+import '../views/AuthScreen/Password_reset.dart';
+import '../views/AuthScreen/otp_verify_pass_reset.dart';
 
 class AuthController extends GetxController {
   final RxBool loadingLogin = false.obs;
@@ -175,6 +180,55 @@ class AuthController extends GetxController {
     }
   }
 
+  sendOtpPassReset(bool isResend) async {
+    try {
+      if (userModel.value.phone == '' || userModel.value.phone!.length < 11) {
+        Get.snackbar('Error', 'Phone number must be 11 digit');
+        return;
+      }
+      isLoading.value = true;
+      final response =
+          await ApiServices.sendOtpPassReset(userModel.value.phone!);
+      isLoading.value = false;
+      final decode = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        Get.snackbar('Error', decode['message']);
+        return;
+      }
+      if (isResend == true) {
+        startTimer();
+        Get.snackbar('Message', 'OTP code resent');
+      } else {
+        Get.to(const OtpVerifyPassReset());
+        startTimer();
+      }
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('Error', '$e');
+    }
+  }
+
+  verifyOtpPassReset() async {
+    try {
+      if (userModel.value.phone == null || userModel.value.otp == null) {
+        Get.snackbar('Error', 'Enter OTP Code');
+        return;
+      }
+      isLoading.value = true;
+      final response = await ApiServices.verifyOtpPssReset(userModel.value);
+      isLoading.value = false;
+      final decode = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        Get.snackbar('Error', decode['message']);
+        return;
+      }
+      Get.to(const PasswordReset());
+    } catch (e) {
+      loadingLogin.value = false;
+      Get.snackbar('Error', 'Something went wrong. Please try again.');
+    }
+  }
+
   void validatePassword(String value) {
     userModel.value.password = value;
     passLengthValid.value = value.length >= 8;
@@ -279,6 +333,30 @@ class AuthController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       Get.snackbar('Error', 'Internal server error.');
+    }
+  }
+
+  void resetPassword() async {
+    try {
+      if (userModel.value.password == null || userModel.value.phone == null) {
+        Get.snackbar('Error', 'Please provide all required data');
+        return;
+      }
+      isLoading.value = true;
+      final response = await ApiServices.passwordReset(userModel.value);
+      final decode = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        isLoading.value = false;
+        Get.snackbar('Error', decode['message']);
+        return;
+      }
+      isLoading.value = false;
+      Get.snackbar(
+          'Message', 'Password reset successfully. Please login again.');
+      Get.to(const LoginScreen());
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('Error', 'Internal Server Error.');
     }
   }
 

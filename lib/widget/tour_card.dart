@@ -99,7 +99,7 @@ class TourCard extends StatelessWidget {
                         height: 3,
                       ),
                       Text(
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         title,
                         style: TextStyle(
@@ -139,7 +139,7 @@ class TourCard extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            duration != null ? duration! : '',
+                            duration != null ? duration! : 'Custom Schedule',
                             style: TextStyle(
                               fontSize: 12,
                             ),

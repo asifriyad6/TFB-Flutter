@@ -28,11 +28,6 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   title: const Text('Select Cabin'),
-      //   centerTitle: true,
-      // ),
       body: Obx(
         () {
           if (controller.isCabinLoading.value) {
@@ -41,57 +36,57 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
           if (controller.houseboatCabins.isEmpty) {
             return const Center(child: Text('No cabins available'));
           }
-          return Stack(
-            children: [
-              Container(
-                height: height * .5,
-                decoration: BoxDecoration(
-                    color: Color(0xFFA0E7E5),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(
-                        30,
+          return SingleChildScrollView(
+            child: Stack(
+              children: [
+                Container(
+                  height: height * .4,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFA0E7E5),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(
+                          30,
+                        ),
+                      )),
+                ),
+                // ClipRRect(
+                //   borderRadius: BorderRadius.only(
+                //     bottomRight: Radius.circular(30),
+                //     bottomLeft: Radius.circular(30),
+                //   ),
+                //   child: CachedNetworkImage(
+                //     width: double.infinity,
+                //     height: height * .4,
+                //     fit: BoxFit.cover,
+                //     imageUrl:
+                //         '${AppConfig.houseboatImage}/${controller.houseboat.value.thumbnail}',
+                //     placeholder: (context, url) =>
+                //         Center(child: CircularProgressIndicator()),
+                //     errorWidget: (context, url, error) =>
+                //         Icon(Icons.error), // Error icon
+                //   ),
+                // ),
+                SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(Icons.arrow_back),
+                        ),
                       ),
-                    )),
-              ),
-              // ClipRRect(
-              //   borderRadius: BorderRadius.only(
-              //     bottomRight: Radius.circular(30),
-              //     bottomLeft: Radius.circular(30),
-              //   ),
-              //   child: CachedNetworkImage(
-              //     width: double.infinity,
-              //     height: height * .4,
-              //     fit: BoxFit.cover,
-              //     imageUrl:
-              //         '${AppConfig.houseboatImage}/${controller.houseboat.value.thumbnail}',
-              //     placeholder: (context, url) =>
-              //         Center(child: CircularProgressIndicator()),
-              //     errorWidget: (context, url, error) =>
-              //         Icon(Icons.error), // Error icon
-              //   ),
-              // ),
-              SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(.5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Icon(Icons.arrow_back),
-                      ),
-                    ),
-                    Container(
-                      height: height * .73,
-                      child: Expanded(
+                      Container(
+                        height: height * .74,
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             double boatWidth = constraints.maxWidth;
@@ -233,50 +228,50 @@ class _BoatLayoutPageState extends State<BoatLayoutPage> {
                           },
                         ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 15,
-                              width: 30,
-                              color: Colors.green,
-                            ),
-                            SizedBox(width: 10),
-                            Text('Available'),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 15,
-                              width: 30,
-                              color: Colors.red,
-                            ),
-                            SizedBox(width: 10),
-                            Text('Booked'),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 15,
-                              width: 30,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(width: 10),
-                            Text('Unavailable'),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 15,
+                                width: 30,
+                                color: Colors.green,
+                              ),
+                              SizedBox(width: 10),
+                              Text('Available'),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 15,
+                                width: 30,
+                                color: Colors.red,
+                              ),
+                              SizedBox(width: 10),
+                              Text('Booked'),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 15,
+                                width: 30,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(width: 10),
+                              Text('Unavailable'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
