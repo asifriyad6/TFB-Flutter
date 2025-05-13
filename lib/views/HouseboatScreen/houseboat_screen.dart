@@ -91,7 +91,9 @@ class _HouseboatScreenState extends State<HouseboatScreen> {
                               0.0,
                           onTap: () {
                             houseboatController.houseboat.value = houseboat;
-                            Get.to(const SingleHouseboat());
+                            Get.to(SingleHouseboat(
+                              houseboatSlug: houseboat.slug!,
+                            ));
                           },
                         );
                       },

@@ -34,7 +34,7 @@ class TourCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
-          height: height * .20,
+          height: 180,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),

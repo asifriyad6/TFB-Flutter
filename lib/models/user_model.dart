@@ -18,6 +18,7 @@ class UserModel {
   int? isActive;
   String? otp;
   double? points;
+  String? fcmToken;
   dynamic createdAt;
   dynamic updatedAt;
 
@@ -35,6 +36,7 @@ class UserModel {
     this.isActive,
     this.otp,
     this.points,
+    this.fcmToken,
     this.createdAt,
     this.updatedAt,
   });
@@ -90,6 +92,7 @@ class UserModel {
       'name': name,
       'phone': phone,
       'password': password,
+      'fcm_token': fcmToken,
     };
   }
 

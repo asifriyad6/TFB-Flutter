@@ -15,7 +15,8 @@ import '../../utils/colors.dart';
 import '../SingleTour/tour_summary.dart';
 
 class SingleHouseboat extends StatefulWidget {
-  const SingleHouseboat({super.key});
+  final String houseboatSlug;
+  const SingleHouseboat({super.key, required this.houseboatSlug});
 
   @override
   State<SingleHouseboat> createState() => _SingleHouseboatState();
@@ -30,9 +31,10 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (authController.isAuthenticated.value) {
-        wishlistController.checkWishlist(null, controller.houseboat.value.id);
+        wishlistController.checkWishlist(
+            null, controller.houseboatDetails.value.id);
       }
-      controller.getHouseboatDetails();
+      controller.getHouseboatDetails(widget.houseboatSlug);
     });
   }
 
@@ -43,362 +45,356 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
     return Scaffold(
       body: Obx(
         () {
-          return controller.isLoading.value == true
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      CachedNetworkImage(
-                        width: double.infinity,
-                        height: height * .5,
-                        fit: BoxFit.cover,
-                        imageUrl:
-                            '${AppConfig.houseboatImage}/${controller.houseboat.value.thumbnail}',
-                        placeholder: (context, url) =>
-                            Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            Icon(Icons.error), // Error icon
-                      ),
-                      SafeArea(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (controller.houseboatDetails.value.title == null) {
+            return const Text("Loading title...");
+          } else {
+            return SingleChildScrollView(
+              child: Stack(
+                children: [
+                  CachedNetworkImage(
+                    width: double.infinity,
+                    height: height * .5,
+                    fit: BoxFit.cover,
+                    imageUrl:
+                        '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.thumbnail}',
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.error), // Error icon
+                  ),
+                  SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 15),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(.5),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    icon: Icon(Icons.arrow_back),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(right: 15),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(.5),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Obx(
-                                    () => IconButton(
-                                      onPressed: () {
-                                        if (authController
-                                            .isAuthenticated.value) {
-                                          if (!wishlistController
-                                              .isWishlist.value) {
-                                            wishlistController.wishlist.value
-                                                    .houseboatId =
-                                                controller.houseboat.value.id;
-                                            wishlistController.addToWishlist();
-                                          } else {
-                                            wishlistController
-                                                .removeFromWishlist(
-                                                    null,
-                                                    controller
-                                                        .houseboat.value.id);
-                                          }
-                                        } else {
-                                          Get.snackbar('Error',
-                                              'You must logged in to add this houseboat to your wishlist');
-                                        }
-                                      },
-                                      icon: Icon(
-                                        wishlistController.isWishlist.value
-                                            ? Icons.favorite
-                                            : Icons.favorite_outline,
-                                        color:
-                                            wishlistController.isWishlist.value
-                                                ? Colors.red
-                                                : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: height * .28),
                             Container(
-                              width: double.infinity,
+                              margin: EdgeInsets.only(left: 15),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
+                                color: Colors.white.withOpacity(.5),
+                                shape: BoxShape.circle,
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on,
-                                          size: 14,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${controller.houseboat.value.location}, ${controller.houseboat.value.city}',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      controller.houseboat.value.title!,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: width * .5,
-                                          child: Column(
-                                            children: [
-                                              TourSummary(
-                                                icon: Icons.timer_outlined,
-                                                title: 'Duration',
-                                                text: '3 Days 2 Nights',
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              TourSummary(
-                                                icon: Icons.people,
-                                                title: 'Capacity',
-                                                text: controller
-                                                    .houseboatDetails
-                                                    .value
-                                                    .capacity
-                                                    .toString(),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              TourSummary(
-                                                icon: Icons.person,
-                                                title: 'Total Rooms',
-                                                text: controller
-                                                    .houseboatDetails
-                                                    .value
-                                                    .totalRooms
-                                                    .toString(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            width: width * .5,
-                                            child: Column(
-                                              children: [
-                                                TourSummary(
-                                                  icon: Icons.calendar_month,
-                                                  title: 'Tour Date',
-                                                  text: '24-01-2025',
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TourSummary(
-                                                  icon: Icons.hiking,
-                                                  title: 'Tour Type',
-                                                  text: 'Adventure',
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TourSummary(
-                                                  icon: Icons.train,
-                                                  title: 'Pickup From',
-                                                  text: controller.houseboat
-                                                      .value.location!,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Divider(
-                                      color: Colors.black.withOpacity(.1),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    HtmlWidget(
-                                      '${controller.houseboatDetails.value.description}',
-                                      textStyle: TextStyle(fontSize: 14),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Divider(
-                                      color: Colors.black.withOpacity(.1),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Highlights(
-                                      highlights: controller
-                                          .houseboatDetails.value.highlights!
-                                          .split('\r,'),
-                                      title: 'Highlights',
-                                      icon: Icons.check_circle_outline_rounded,
-                                      iconColor: Colors.blue,
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Highlights(
-                                        highlights: controller.houseboatDetails
-                                            .value.visibleSpots!
-                                            .split('\r,'),
-                                        title: 'Visible Spots',
-                                        icon: Icons.check_box_outlined,
-                                        iconColor: Colors.blueAccent),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Divider(
-                                      color: Colors.black.withOpacity(.1),
-                                    ),
-                                    Highlights(
-                                        highlights: controller
-                                            .houseboatDetails.value.includes!
-                                            .split('\r,')!,
-                                        title: 'Includes',
-                                        icon: Icons.check,
-                                        iconColor: AppColor.primaryColor),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Highlights(
-                                        highlights: controller
-                                            .houseboatDetails.value.excludes!
-                                            .split('\r,')!,
-                                        title: 'Excludes',
-                                        icon: Icons.close,
-                                        iconColor: Colors.red),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Divider(
-                                      color: Colors.black.withOpacity(.1),
-                                    ),
-                                    Text(
-                                      'Gallery Images',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    controller.houseboatDetails.value.images!
-                                                .length >
-                                            0
-                                        ? CarouselSlider.builder(
-                                            itemCount: controller
-                                                .houseboatDetails
-                                                .value
-                                                .images!
-                                                .length,
-                                            itemBuilder:
-                                                (context, index, realIndex) {
-                                              return Container(
-                                                width: double.infinity,
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 5),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: CachedNetworkImage(
-                                                    fit: BoxFit.cover,
-                                                    imageUrl:
-                                                        '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.images![index].imageName}',
-                                                    placeholder: (context,
-                                                            url) =>
-                                                        Center(
-                                                            child:
-                                                                CircularProgressIndicator()),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        Icon(Icons
-                                                            .error), // Error icon
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            options: CarouselOptions(
-                                              height: height * .2,
-                                              aspectRatio: 16 / 9,
-                                              viewportFraction: 0.8,
-                                              initialPage: 0,
-                                              enableInfiniteScroll: true,
-                                              reverse: false,
-                                              autoPlay: false,
-                                              autoPlayInterval:
-                                                  Duration(seconds: 3),
-                                              autoPlayAnimationDuration:
-                                                  Duration(milliseconds: 800),
-                                              autoPlayCurve:
-                                                  Curves.fastOutSlowIn,
-                                              enlargeCenterPage: false,
-                                              enlargeFactor: 0.3,
-                                              scrollDirection: Axis.horizontal,
-                                            ),
-                                          )
-                                        : Text(
-                                            'No Gallary Images Found!',
-                                          ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
+                              child: IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(Icons.arrow_back),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 15),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(.5),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Obx(
+                                () => IconButton(
+                                  onPressed: () {
+                                    if (authController.isAuthenticated.value) {
+                                      if (!wishlistController
+                                          .isWishlist.value) {
+                                        wishlistController
+                                                .wishlist.value.houseboatId =
+                                            controller
+                                                .houseboatDetails.value.id;
+                                        wishlistController.addToWishlist();
+                                      } else {
+                                        wishlistController.removeFromWishlist(
+                                            null,
+                                            controller
+                                                .houseboatDetails.value.id);
+                                      }
+                                    } else {
+                                      Get.snackbar('Error',
+                                          'You must logged in to add this houseboat to your wishlist');
+                                    }
+                                  },
+                                  icon: Icon(
+                                    wishlistController.isWishlist.value
+                                        ? Icons.favorite
+                                        : Icons.favorite_outline,
+                                    color: wishlistController.isWishlist.value
+                                        ? Colors.red
+                                        : Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        SizedBox(height: height * .28),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      size: 14,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '${controller.houseboatDetails.value.location?.name}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  controller.houseboatDetails.value.title!,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: width * .5,
+                                      child: Column(
+                                        children: [
+                                          TourSummary(
+                                            icon: Icons.timer_outlined,
+                                            title: 'Duration',
+                                            text: '3 Days 2 Nights',
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          TourSummary(
+                                            icon: Icons.people,
+                                            title: 'Capacity',
+                                            text: controller
+                                                .houseboatDetails.value.capacity
+                                                .toString(),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          TourSummary(
+                                            icon: Icons.person,
+                                            title: 'Total Rooms',
+                                            text: controller.houseboatDetails
+                                                .value.totalRooms
+                                                .toString(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        width: width * .5,
+                                        child: Column(
+                                          children: [
+                                            TourSummary(
+                                              icon: Icons.calendar_month,
+                                              title: 'Tour Date',
+                                              text: '24-01-2025',
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            TourSummary(
+                                              icon: Icons.hiking,
+                                              title: 'Tour Type',
+                                              text: 'Adventure',
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            TourSummary(
+                                              icon: Icons.train,
+                                              title: 'Pickup From',
+                                              text: controller.houseboatDetails
+                                                  .value.location!.name!,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Divider(
+                                  color: Colors.black.withOpacity(.1),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                HtmlWidget(
+                                  '${controller.houseboatDetails.value.description}',
+                                  textStyle: TextStyle(fontSize: 14),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Divider(
+                                  color: Colors.black.withOpacity(.1),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Highlights(
+                                  highlights: controller
+                                      .houseboatDetails.value.highlights!
+                                      .split('\r,'),
+                                  title: 'Highlights',
+                                  icon: Icons.check_circle_outline_rounded,
+                                  iconColor: Colors.blue,
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Highlights(
+                                    highlights: controller
+                                        .houseboatDetails.value.visibleSpots!
+                                        .split('\r,'),
+                                    title: 'Visible Spots',
+                                    icon: Icons.check_box_outlined,
+                                    iconColor: Colors.blueAccent),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Divider(
+                                  color: Colors.black.withOpacity(.1),
+                                ),
+                                Highlights(
+                                    highlights: controller
+                                        .houseboatDetails.value.includes!
+                                        .split('\r,'),
+                                    title: 'Includes',
+                                    icon: Icons.check,
+                                    iconColor: AppColor.primaryColor),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Highlights(
+                                    highlights: controller
+                                        .houseboatDetails.value.excludes!
+                                        .split('\r,'),
+                                    title: 'Excludes',
+                                    icon: Icons.close,
+                                    iconColor: Colors.red),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Divider(
+                                  color: Colors.black.withOpacity(.1),
+                                ),
+                                Text(
+                                  'Gallery Images',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                controller.houseboatDetails.value.images!
+                                            .length >
+                                        0
+                                    ? CarouselSlider.builder(
+                                        itemCount: controller.houseboatDetails
+                                            .value.images!.length,
+                                        itemBuilder:
+                                            (context, index, realIndex) {
+                                          return Container(
+                                            width: double.infinity,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl:
+                                                    '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.images![index].imageName}',
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Icon(Icons
+                                                        .error), // Error icon
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          height: height * .2,
+                                          aspectRatio: 16 / 9,
+                                          viewportFraction: 0.8,
+                                          initialPage: 0,
+                                          enableInfiniteScroll: true,
+                                          reverse: false,
+                                          autoPlay: false,
+                                          autoPlayInterval:
+                                              Duration(seconds: 3),
+                                          autoPlayAnimationDuration:
+                                              Duration(milliseconds: 800),
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          enlargeCenterPage: false,
+                                          enlargeFactor: 0.3,
+                                          scrollDirection: Axis.horizontal,
+                                        ),
+                                      )
+                                    : Text(
+                                        'No Gallary Images Found!',
+                                      ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                );
+                ],
+              ),
+            );
+          }
         },
       ),
       bottomNavigationBar: Container(
@@ -429,36 +425,39 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         fontSize: 12,
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          '৳${double.parse(controller.houseboat.value.discountedPrice ?? '0.0')}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                    Obx(
+                      () => Row(
+                        children: [
+                          Text(
+                            '৳${double.parse(controller.houseboatDetails.value.discountedPrice ?? '0.0')}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        double.parse(controller.houseboat.value.startingPrice ??
-                                    '0.0') >
-                                double.parse(controller
-                                        .houseboat.value.discountedPrice ??
-                                    '0.0')
-                            ? Text(
-                                '৳ ${double.parse(controller.houseboat.value.startingPrice.toString())}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.red,
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationColor: Colors.red,
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
-                    ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          double.parse(controller.houseboatDetails.value
+                                          .startingPrice ??
+                                      '0.0') >
+                                  double.parse(controller.houseboatDetails.value
+                                          .discountedPrice ??
+                                      '0.0')
+                              ? Text(
+                                  '৳ ${double.parse(controller.houseboatDetails.value.startingPrice.toString())}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.red,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.red,
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

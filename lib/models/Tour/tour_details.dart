@@ -32,9 +32,13 @@ class TourDetails {
   int? featured;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? discountedPrice;
+  DateTime? firstSchedule;
+  String? duration;
   List<Image>? images;
-  List<Schedule>? schedule;
   List<Itinerary>? itineraries;
+  Location? location;
+  List<Schedule>? schedule;
 
   TourDetails({
     this.id,
@@ -59,9 +63,13 @@ class TourDetails {
     this.featured,
     this.createdAt,
     this.updatedAt,
+    this.discountedPrice,
+    this.firstSchedule,
+    this.duration,
     this.images,
-    this.schedule,
     this.itineraries,
+    this.location,
+    this.schedule,
   });
 
   factory TourDetails.fromJson(Map<String, dynamic> json) => TourDetails(
@@ -91,17 +99,25 @@ class TourDetails {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        discountedPrice: json["discounted_price"],
+        firstSchedule: json["first_schedule"] == null
+            ? null
+            : DateTime.parse(json["first_schedule"]),
+        duration: json["duration"],
         images: json["images"] == null
             ? []
             : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
-        schedule: json["schedule"] == null
-            ? []
-            : List<Schedule>.from(
-                json["schedule"]!.map((x) => Schedule.fromJson(x))),
         itineraries: json["itineraries"] == null
             ? []
             : List<Itinerary>.from(
                 json["itineraries"]!.map((x) => Itinerary.fromJson(x))),
+        location: json["location"] == null
+            ? null
+            : Location.fromJson(json["location"]),
+        schedule: json["schedule"] == null
+            ? []
+            : List<Schedule>.from(
+                json["schedule"]!.map((x) => Schedule.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -127,15 +143,20 @@ class TourDetails {
         "featured": featured,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "discounted_price": discountedPrice,
+        "first_schedule":
+            "${firstSchedule!.year.toString().padLeft(4, '0')}-${firstSchedule!.month.toString().padLeft(2, '0')}-${firstSchedule!.day.toString().padLeft(2, '0')}",
+        "duration": duration,
         "images": images == null
             ? []
             : List<dynamic>.from(images!.map((x) => x.toJson())),
-        "schedule": schedule == null
-            ? []
-            : List<dynamic>.from(schedule!.map((x) => x.toJson())),
         "itineraries": itineraries == null
             ? []
             : List<dynamic>.from(itineraries!.map((x) => x.toJson())),
+        "location": location?.toJson(),
+        "schedule": schedule == null
+            ? []
+            : List<dynamic>.from(schedule!.map((x) => x.toJson())),
       };
 }
 
@@ -212,6 +233,83 @@ class Itinerary {
         "itinerary_details": itineraryDetails,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
+class Location {
+  int? id;
+  String? name;
+  int? cityId;
+  City? city;
+
+  Location({
+    this.id,
+    this.name,
+    this.cityId,
+    this.city,
+  });
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+        id: json["id"],
+        name: json["name"],
+        cityId: json["city_id"],
+        city: json["city"] == null ? null : City.fromJson(json["city"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "city_id": cityId,
+        "city": city?.toJson(),
+      };
+}
+
+class City {
+  int? id;
+  String? name;
+  int? countryId;
+  Country? country;
+
+  City({
+    this.id,
+    this.name,
+    this.countryId,
+    this.country,
+  });
+
+  factory City.fromJson(Map<String, dynamic> json) => City(
+        id: json["id"],
+        name: json["name"],
+        countryId: json["country_id"],
+        country:
+            json["country"] == null ? null : Country.fromJson(json["country"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "country_id": countryId,
+        "country": country?.toJson(),
+      };
+}
+
+class Country {
+  int? id;
+  String? name;
+
+  Country({
+    this.id,
+    this.name,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
+        id: json["id"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
       };
 }
 

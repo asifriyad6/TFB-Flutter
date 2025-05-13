@@ -50,18 +50,27 @@ class TourController extends GetxController {
     }
   }
 
-  getTourDetails() async {
-    isLoading.value = true;
-    final response = await ApiServices.getTourDetails(tour.value.slug!);
-    if (response.statusCode == 200) {
-      tourDetails.value = tourDetailsFromJson(response.body);
-      scheduleDate.value = [];
-      for (var schedule in tourDetails.value.schedule!) {
-        scheduleDate.add(schedule.startDate);
+  getTourDetails(String slug) async {
+    try {
+      isLoading.value = true;
+      tourDetails.value = TourDetails();
+      final response = await ApiServices.getTourDetails(slug);
+      if (response.statusCode == 200) {
+        tourDetails.value = tourDetailsFromJson(response.body);
+        scheduleDate.value = [];
+        for (var schedule in tourDetails.value.schedule ?? []) {
+          scheduleDate.add(schedule.startDate);
+        }
+        selectedDate.value = null;
+        update();
+        print(scheduleDate.value);
+      } else {
+        print('Failed to load tour details: ${response.statusCode}');
       }
+    } catch (e) {
+      print('Error loading tour details: $e');
+    } finally {
       isLoading.value = false;
-      selectedDate.value = null;
-      update();
     }
   }
 

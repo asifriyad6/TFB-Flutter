@@ -62,11 +62,12 @@ class _TourScreenState extends State<TourScreen> {
                     return TourCardShimmer();
                   } else if (tourController.tours.isEmpty) {
                     return Container(
+                      width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50, vertical: 20),
                       child: const Text(
                           textAlign: TextAlign.center,
-                          'No tours found in this location. Please check back later.'),
+                          'No tours found. Please check back later.'),
                     );
                   } else {
                     return ListView.builder(
@@ -88,7 +89,9 @@ class _TourScreenState extends State<TourScreen> {
                           ),
                           onTap: () {
                             tourController.tour.value = tour;
-                            Get.to(const SingleTour());
+                            Get.to(SingleTour(
+                              slug: tour.slug!,
+                            ));
                           },
                         );
                       },

@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:tfb/models/Tour/tour_model.dart';
 import 'package:tfb/models/banner_images.dart';
@@ -20,6 +24,7 @@ class HomeController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    storeFcmTokens();
     getGeneralData();
     getBanner();
     getLocation();
@@ -84,6 +89,21 @@ class HomeController extends GetxController {
     } else {
       tourLoading.value = false;
       Get.snackbar('Error', 'Internal Server Error');
+    }
+  }
+
+  storeFcmTokens() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    if (fcmToken != null) {
+      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      final deviceId = androidInfo.id;
+      final deviceName = androidInfo.model;
+      final deviceManufacturer = androidInfo.manufacturer;
+      final deviceBrand = androidInfo.brand;
+      final deviceVersion = androidInfo.version.release;
+      await ApiServices.saveFcmTokenToServer(fcmToken, deviceId, deviceName,
+          deviceManufacturer, deviceBrand, deviceVersion);
     }
   }
 

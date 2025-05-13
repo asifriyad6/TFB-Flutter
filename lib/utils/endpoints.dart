@@ -2,6 +2,7 @@ import 'config.dart';
 
 class ApiEndpoints {
   static const String apiUrl = '${AppConfig.baseUrl}/api/v1';
+  static Uri storeFcmToken = Uri.parse('$apiUrl/store-fcm-tokens');
   static String searchDestination = '$apiUrl/search-destination';
   static Uri bannerImages = Uri.parse('$apiUrl/banner-images');
   static Uri locationList = Uri.parse('$apiUrl/locations');

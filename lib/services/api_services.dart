@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:http/http.dart' as http;
 import 'package:tfb/models/Houseboat/booking_request.dart';
 import 'package:tfb/models/Tour/booking_request.dart';
@@ -12,6 +10,29 @@ import '../models/houseboat_model.dart';
 import '../models/user_model.dart';
 
 class ApiServices {
+  static Future<http.Response> saveFcmTokenToServer(
+      String token,
+      String deviceId,
+      String deviceModel,
+      String deviceManufacturer,
+      String deviceBrand,
+      String osVersion) async {
+    return await http.post(
+      Uri.parse('${ApiEndpoints.storeFcmToken}'),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        'fcm_token': token,
+        'device_id': deviceId,
+        'device_model': deviceModel,
+        'device_manufacturer': deviceManufacturer,
+        'device_brand': deviceBrand,
+        'os_version': osVersion,
+      },
+    );
+  }
+
   static Future<http.Response> getSearchDestination(String query) async {
     return await http.get(
       Uri.parse('${ApiEndpoints.searchDestination}?query=$query'),

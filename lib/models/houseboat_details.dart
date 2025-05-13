@@ -24,7 +24,10 @@ class HouseboatDetails {
   int? featured;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? startingPrice;
+  String? discountedPrice;
   List<Image>? images;
+  Location? location;
   List<Schedule>? schedule;
 
   HouseboatDetails({
@@ -45,7 +48,10 @@ class HouseboatDetails {
     this.featured,
     this.createdAt,
     this.updatedAt,
+    this.startingPrice,
+    this.discountedPrice,
     this.images,
+    this.location,
     this.schedule,
   });
 
@@ -72,9 +78,14 @@ class HouseboatDetails {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        startingPrice: json["starting_price"],
+        discountedPrice: json["discounted_price"],
         images: json["images"] == null
             ? []
             : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+        location: json["location"] == null
+            ? null
+            : Location.fromJson(json["location"]),
         schedule: json["schedule"] == null
             ? []
             : List<Schedule>.from(
@@ -99,9 +110,12 @@ class HouseboatDetails {
         "featured": featured,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "starting_price": startingPrice,
+        "discounted_price": discountedPrice,
         "images": images == null
             ? []
             : List<dynamic>.from(images!.map((x) => x.toJson())),
+        "location": location?.toJson(),
         "schedule": schedule == null
             ? []
             : List<dynamic>.from(schedule!.map((x) => x.toJson())),
@@ -139,6 +153,54 @@ class Image {
         "id": id,
         "houseboat_id": houseboatId,
         "image_name": imageName,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
+class Location {
+  int? id;
+  int? cityId;
+  int? countryId;
+  String? slug;
+  String? name;
+  String? thumbnail;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Location({
+    this.id,
+    this.cityId,
+    this.countryId,
+    this.slug,
+    this.name,
+    this.thumbnail,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+        id: json["id"],
+        cityId: json["city_id"],
+        countryId: json["country_id"],
+        slug: json["slug"],
+        name: json["name"],
+        thumbnail: json["thumbnail"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "city_id": cityId,
+        "country_id": countryId,
+        "slug": slug,
+        "name": name,
+        "thumbnail": thumbnail,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };

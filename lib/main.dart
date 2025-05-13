@@ -1,9 +1,9 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tfb/Splash/splash_screen.dart';
 import 'package:tfb/navigation_menu.dart';
-import 'package:tfb/theme/theme_data.dart';
+import 'package:tfb/services/firebase_notification.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/AccountScreen/account_screen.dart';
 import 'package:tfb/views/HomeScreen/home_screen.dart';
@@ -11,7 +11,10 @@ import 'package:tfb/views/HouseboatScreen/houseboat_screen.dart';
 import 'package:tfb/views/payment/payment_failed.dart';
 import 'package:tfb/views/payment/payment_success.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initialize();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   runApp(const MyApp());
 }
 

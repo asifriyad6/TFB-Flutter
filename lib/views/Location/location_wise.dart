@@ -140,7 +140,9 @@ class _LocationWiseState extends State<LocationWise> {
                                     ),
                                     onTap: () {
                                       tourController.tour.value = tour;
-                                      Get.to(const SingleTour());
+                                      Get.to(SingleTour(
+                                        slug: tour.slug!,
+                                      ));
                                     },
                                   );
                                 },
@@ -200,7 +202,9 @@ class _LocationWiseState extends State<LocationWise> {
                                   onTap: () {
                                     houseboatController.houseboat.value =
                                         houseboat;
-                                    Get.to(const SingleHouseboat());
+                                    Get.to(SingleHouseboat(
+                                      houseboatSlug: houseboat.slug!,
+                                    ));
                                   },
                                 );
                               },

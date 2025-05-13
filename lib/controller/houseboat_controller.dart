@@ -55,19 +55,26 @@ class HouseboatController extends GetxController {
     }
   }
 
-  getHouseboatDetails() async {
+  getHouseboatDetails(String slug) async {
     isLoading.value = true;
-    final response =
-        await ApiServices.getHouseboatDetails(houseboat.value.slug!);
-    if (response.statusCode == 200) {
-      houseboatDetails.value = houseboatDetailsFromJson(response.body);
-      for (var schedule in houseboatDetails.value.schedule!) {
-        scheduleDate.add(schedule.startDate);
+    try {
+      final response = await ApiServices.getHouseboatDetails(slug);
+      if (response.statusCode == 200) {
+        houseboatDetails.value = houseboatDetailsFromJson(response.body);
+        scheduleDate.clear();
+        for (var schedule in houseboatDetails.value.schedule!) {
+          scheduleDate.add(schedule.startDate);
+        }
+        selectedDate.value = null;
+        update();
+      } else {
+        print('Failed to load houseboat details.');
       }
-      //selectedDate.value = scheduleDate.value.first;
+    } catch (e) {
+      Get.snackbar('Error', 'Something went wrong: $e');
+      print('Error in getHouseboatDetails: $e');
+    } finally {
       isLoading.value = false;
-      selectedDate.value = null;
-      update();
     }
   }
 

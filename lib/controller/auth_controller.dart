@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -258,6 +259,7 @@ class AuthController extends GetxController {
         return;
       }
       isLoading.value = true;
+      userModel.value.fcmToken = await FirebaseMessaging.instance.getToken();
       final response = await ApiServices.register(userModel.value);
       isLoading.value = false;
       final decode = jsonDecode(response.body);
