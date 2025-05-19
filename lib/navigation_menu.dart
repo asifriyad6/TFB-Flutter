@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/AccountScreen/account_screen.dart';
 import 'package:tfb/views/HomeScreen/home_screen.dart';
@@ -10,12 +10,16 @@ import 'package:tfb/views/HouseboatScreen/houseboat_screen.dart';
 import 'package:tfb/views/TourScreen/tour_screen.dart';
 import 'package:tfb/widget/custom_button.dart';
 
+import 'controller/home_controller.dart';
+
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());
+    final homeController = Get.put(HomeController());
+    controller.checkVersion();
 
     return WillPopScope(
       onWillPop: () async {
@@ -27,70 +31,77 @@ class NavigationMenu extends StatelessWidget {
       },
       child: Scaffold(
         bottomNavigationBar: Obx(
-          () => Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 10,
-                  spreadRadius: 3,
-                ),
-              ],
-            ),
-            child: NavigationBar(
-              backgroundColor: Colors.white,
-              labelPadding: const EdgeInsets.all(0),
-              height: 60,
-              elevation: 10,
-              indicatorColor: Colors.transparent,
-              shadowColor: Colors.black,
-              selectedIndex: controller.selectedIndex.value,
-              onDestinationSelected: (index) =>
-                  controller.selectedIndex.value = index,
-              destinations: [
-                NavigationDestination(
+          () {
+            if (homeController.isUpdateRequired.value) {
+              return SizedBox();
+            }
+            return Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.3),
+                    blurRadius: 10,
+                    spreadRadius: 3,
+                  ),
+                ],
+              ),
+              child: NavigationBar(
+                backgroundColor: Colors.white,
+                labelPadding: const EdgeInsets.all(0),
+                height: 60,
+                elevation: 10,
+                indicatorColor: Colors.transparent,
+                shadowColor: Colors.black,
+                selectedIndex: controller.selectedIndex.value,
+                onDestinationSelected: (index) =>
+                    controller.selectedIndex.value = index,
+                destinations: [
+                  NavigationDestination(
+                      icon: Icon(
+                        Icons.home_outlined,
+                        size: 30,
+                        color: Colors.black.withOpacity(.5),
+                      ),
+                      selectedIcon: Icon(Icons.home,
+                          size: 30, color: AppColor.primaryColor),
+                      label: 'Home'),
+                  NavigationDestination(
+                      icon: Icon(
+                        Icons.tour_outlined,
+                        size: 30,
+                        color: Colors.black.withOpacity(.5),
+                      ),
+                      selectedIcon: Icon(Icons.tour,
+                          size: 30, color: AppColor.primaryColor),
+                      label: 'Tours'),
+                  NavigationDestination(
                     icon: Icon(
-                      Icons.home_outlined,
+                      Icons.houseboat_outlined,
                       size: 30,
                       color: Colors.black.withOpacity(.5),
                     ),
-                    selectedIcon: Icon(Icons.home,
+                    selectedIcon: Icon(Icons.houseboat,
                         size: 30, color: AppColor.primaryColor),
-                    label: 'Home'),
-                NavigationDestination(
+                    label: 'Houseboat',
+                  ),
+                  NavigationDestination(
                     icon: Icon(
-                      Icons.tour_outlined,
+                      Icons.person_outline,
                       size: 30,
                       color: Colors.black.withOpacity(.5),
                     ),
-                    selectedIcon: Icon(Icons.tour,
+                    selectedIcon: Icon(Icons.person,
                         size: 30, color: AppColor.primaryColor),
-                    label: 'Tours'),
-                NavigationDestination(
-                  icon: Icon(
-                    Icons.houseboat_outlined,
-                    size: 30,
-                    color: Colors.black.withOpacity(.5),
-                  ),
-                  selectedIcon: Icon(Icons.houseboat,
-                      size: 30, color: AppColor.primaryColor),
-                  label: 'Houseboat',
-                ),
-                NavigationDestination(
-                  icon: Icon(
-                    Icons.person_outline,
-                    size: 30,
-                    color: Colors.black.withOpacity(.5),
-                  ),
-                  selectedIcon: Icon(Icons.person,
-                      size: 30, color: AppColor.primaryColor),
-                  label: 'Account',
-                )
-              ],
-            ),
-          ),
+                    label: 'Account',
+                  )
+                ],
+              ),
+            );
+          },
         ),
-        drawer: const AppDrawer(appVersion: '1.0.1'),
+        drawer: Obx(
+          () => AppDrawer(appVersion: controller.appVersion.value),
+        ),
         body: Obx(() => controller.screens[controller.selectedIndex.value]),
       ),
     );
@@ -132,10 +143,15 @@ class NavigationMenu extends StatelessWidget {
 
 class NavigationController extends GetxController {
   final RxInt selectedIndex = 0.obs;
+  final RxString appVersion = ''.obs;
   final screens = [
-    HomeScreen(),
+    const HomeScreen(),
     const TourScreen(),
     const HouseboatScreen(),
     const AccountScreen(),
   ];
+  checkVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appVersion.value = packageInfo.version;
+  }
 }

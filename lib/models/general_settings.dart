@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final generalSettings = generalSettingsFromJson(jsonString);
-
 import 'dart:convert';
 
 GeneralSettings generalSettingsFromJson(String str) =>
@@ -26,11 +22,15 @@ class GeneralSettings {
   String? address;
   dynamic latitude;
   dynamic longitude;
-  dynamic facebook;
-  dynamic instagram;
-  dynamic whatsapp;
-  dynamic linkedin;
-  dynamic youtube;
+  String? androidVersion;
+  String? iosVersion;
+  String? androidUrl;
+  String? iosUrl;
+  String? facebook;
+  String? instagram;
+  String? whatsapp;
+  String? linkedin;
+  String? youtube;
 
   GeneralSettings({
     this.id,
@@ -48,6 +48,10 @@ class GeneralSettings {
     this.address,
     this.latitude,
     this.longitude,
+    this.androidVersion,
+    this.iosVersion,
+    this.androidUrl,
+    this.iosUrl,
     this.facebook,
     this.instagram,
     this.whatsapp,
@@ -72,6 +76,10 @@ class GeneralSettings {
         address: json["address"],
         latitude: json["latitude"],
         longitude: json["longitude"],
+        androidVersion: json["android_version"],
+        iosVersion: json["ios_version"],
+        androidUrl: json["android_url"],
+        iosUrl: json["ios_url"],
         facebook: json["facebook"],
         instagram: json["instagram"],
         whatsapp: json["whatsapp"],
@@ -95,6 +103,10 @@ class GeneralSettings {
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
+        "android_version": androidVersion,
+        "ios_version": iosVersion,
+        "android_url": androidUrl,
+        "ios_url": iosUrl,
         "facebook": facebook,
         "instagram": instagram,
         "whatsapp": whatsapp,

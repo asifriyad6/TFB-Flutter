@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/utils/colors.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
+import 'package:tfb/views/AccountScreen/ContactUs/contact_us.dart';
 import 'package:tfb/views/AuthScreen/login_screen.dart';
 import 'package:tfb/views/GeneralSettings/privacy_policy.dart';
 import 'package:tfb/views/GeneralSettings/terms_conditions.dart';
@@ -12,7 +13,7 @@ import '../../../utils/config.dart';
 class AppDrawer extends StatelessWidget {
   final String appVersion;
 
-  const AppDrawer({Key? key, required this.appVersion}) : super(key: key);
+  const AppDrawer({super.key, required this.appVersion});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,9 @@ class AppDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   DrawerHeader(
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(0)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
                       child: authController.isAuthenticated.value
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -44,17 +46,18 @@ class AppDrawer extends StatelessWidget {
                                   ),
                                   maxRadius: 40,
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(authController.userModel.value.name!,
-                                    style: TextStyle(
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     )),
                               ],
                             )
                           : InkWell(
-                              onTap: () => Get.to(LoginScreen()),
-                              child: Row(
+                              onTap: () => Get.to(const LoginScreen()),
+                              child: const Row(
                                 children: [
                                   CircleAvatar(
                                     minRadius: 40,
@@ -130,7 +133,9 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     Icons.call,
                     'Contact Us',
-                    () {},
+                    () {
+                      Get.to(const ContactUs());
+                    },
                   ),
                   _buildDrawerItem(Icons.logout, "Logout", () {
                     authController.logout();
@@ -154,7 +159,7 @@ class AppDrawer extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                 ],
               ),
@@ -165,6 +170,8 @@ class AppDrawer extends StatelessWidget {
 
   Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+      dense: true,
       leading: Icon(icon, color: AppColor.primaryColor),
       title: Text(title,
           style: const TextStyle(

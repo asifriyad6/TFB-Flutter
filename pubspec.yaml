@@ -67,6 +67,9 @@ dependencies:
   device_info_plus:
   flutter_local_notifications:
   firebase_analytics:
+  url_launcher:
+  package_info_plus:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +99,7 @@ flutter:
     - assets/
     - assets/lottie/
     - assets/paymentGateway/
+    - assets/socialIcons/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

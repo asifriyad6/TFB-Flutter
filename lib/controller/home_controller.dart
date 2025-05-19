@@ -1,14 +1,15 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tfb/models/Tour/tour_model.dart';
 import 'package:tfb/models/banner_images.dart';
 import 'package:tfb/models/general_settings.dart';
 import 'package:tfb/models/houseboat_model.dart';
 import 'package:tfb/models/location_model.dart';
 import 'package:tfb/services/api_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   var houseboats = <HouseboatModel>[].obs;
@@ -20,13 +21,16 @@ class HomeController extends GetxController {
   RxBool tourLoading = RxBool(false);
   RxBool locationLoading = RxBool(false);
   RxBool carouselLoading = RxBool(false);
+  RxBool isUpdateRequired = RxBool(false);
+  RxBool isChecking = RxBool(true);
 
   @override
-  onInit() {
+  onInit() async {
     super.onInit();
-    storeFcmTokens();
-    getGeneralData();
+    await getGeneralData();
+    await checkVersion();
     getBanner();
+    storeFcmTokens();
     getLocation();
     getHouseboat();
     getTour();
@@ -39,6 +43,67 @@ class HomeController extends GetxController {
       update();
     } else {
       Get.snackbar('Error', response.body);
+    }
+  }
+
+  Future<void> checkVersion() async {
+    try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String currentVersion = packageInfo.version;
+      String latestVersion = generalSettings.value.androidVersion!;
+      if (latestVersion != currentVersion) {
+        isUpdateRequired.value = true;
+      }
+    } catch (e) {
+      print("Version check error: $e");
+    } finally {
+      isChecking.value = false;
+    }
+  }
+
+  void launchUpdateUrl() async {
+    final url = Uri.parse(generalSettings.value.androidUrl!);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      Get.snackbar("Error", "Could not launch update link");
+    }
+  }
+
+  Future<void> launchPhone() async {
+    final Uri url = Uri(scheme: 'tel', path: generalSettings.value.phone1);
+    try {
+      if (!await launchUrl(url)) {
+        throw 'Could not launch phone dialer';
+      }
+    } catch (e) {
+      print('Error launching phone: $e');
+    }
+  }
+
+  Future<void> launchEmail() async {
+    final Uri url = Uri(scheme: 'mailto', path: generalSettings.value.email);
+    if (await canLaunchUrl(url)) {
+      final success =
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!success) {
+        Get.snackbar('Error', 'Could not launch the URL');
+      }
+    } else {
+      Get.snackbar('Error', 'Could not open email app');
+    }
+  }
+
+  openSocialUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      final success =
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (!success) {
+        Get.snackbar('Error', 'Could not launch the URL');
+      }
+    } else {
+      Get.snackbar('Error', 'Invalid URL');
     }
   }
 

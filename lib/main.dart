@@ -14,7 +14,7 @@ import 'package:tfb/views/payment/payment_success.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initialize();
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  //FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   runApp(const MyApp());
 }
 

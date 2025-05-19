@@ -17,7 +17,7 @@ class CarouselBanner extends StatelessWidget {
       itemBuilder: (context, index, realIndex) {
         return Container(
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(0),
           ),
@@ -28,9 +28,9 @@ class CarouselBanner extends StatelessWidget {
               width: double.infinity,
               imageUrl: '${AppConfig.bannerImage}/${banner[index].name!}',
               placeholder: (context, url) =>
-                  Center(child: CircularProgressIndicator()),
+                  const Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) =>
-                  Icon(Icons.error), // Error icon
+                  const Icon(Icons.error), // Error icon
             ),
           ),
         );
@@ -43,8 +43,8 @@ class CarouselBanner extends StatelessWidget {
         enableInfiniteScroll: true,
         reverse: false,
         autoPlay: false,
-        autoPlayInterval: Duration(seconds: 3),
-        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,
         enlargeCenterPage: true,
         enlargeFactor: 0.0,

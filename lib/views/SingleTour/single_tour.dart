@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:tfb/controller/tour_controller.dart';
 import 'package:tfb/controller/wishlist_controller.dart';
 import 'package:tfb/utils/colors.dart';
+import 'package:tfb/views/AccountScreen/ContactUs/contact_us.dart';
 import 'package:tfb/views/SingleTour/tour_summary.dart';
 import 'package:tfb/views/SingleTour/widget/booking_module.dart';
 import 'package:tfb/views/SingleTour/widget/itinerary_expansion.dart';
@@ -64,12 +65,12 @@ class _SingleTourState extends State<SingleTour> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Per Person',
                       style: TextStyle(
                         fontSize: 12,
@@ -80,12 +81,12 @@ class _SingleTourState extends State<SingleTour> {
                         children: [
                           Text(
                             '৳ ${controller.tourDetails.value.discountedPrice}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           double.parse(controller
@@ -98,7 +99,7 @@ class _SingleTourState extends State<SingleTour> {
                                       '0')
                               ? Text(
                                   '৳ ${controller.tourDetails.value.priceAdult}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.red,
@@ -106,7 +107,7 @@ class _SingleTourState extends State<SingleTour> {
                                     decorationColor: Colors.red,
                                   ),
                                 )
-                              : SizedBox(),
+                              : const SizedBox(),
                         ],
                       ),
                     )
@@ -120,7 +121,9 @@ class _SingleTourState extends State<SingleTour> {
                       fullWidth: width * .5,
                       color: AppColor.tertiaryColor,
                       title: "Contact Us",
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(const ContactUs());
+                      },
                     );
                   } else {
                     return CustomButton(
@@ -143,7 +146,7 @@ class _SingleTourState extends State<SingleTour> {
       body: Obx(
         () {
           if (controller.isLoading.value) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -160,20 +163,20 @@ class _SingleTourState extends State<SingleTour> {
                     imageUrl:
                         '${AppConfig.tourImage}/${controller.tourDetails.value.thumbnail}',
                     placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) =>
-                        Icon(Icons.error), // Error icon
+                        const Icon(Icons.error), // Error icon
                   ),
                   SafeArea(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 15),
+                              margin: const EdgeInsets.only(left: 15),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(.5),
                                 shape: BoxShape.circle,
@@ -182,13 +185,13 @@ class _SingleTourState extends State<SingleTour> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back,
                                 ),
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(right: 15),
+                              margin: const EdgeInsets.only(right: 15),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(.5),
                                 shape: BoxShape.circle,
@@ -237,40 +240,40 @@ class _SingleTourState extends State<SingleTour> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.location_on,
                                       size: 14,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Text(
                                       '${controller.tourDetails.value.location?.name} , ${controller.tourDetails.value.location?.city?.name}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   controller.tourDetails.value.title!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
@@ -289,7 +292,7 @@ class _SingleTourState extends State<SingleTour> {
                                                     .tourDetails.value.duration!
                                                 : 'Flexible',
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TourSummary(
@@ -298,7 +301,7 @@ class _SingleTourState extends State<SingleTour> {
                                             text:
                                                 '${controller.tourDetails.value.maxPeople} Persons',
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TourSummary(
@@ -324,7 +327,7 @@ class _SingleTourState extends State<SingleTour> {
                                                   ? '${DateFormat('yyyy-MM-dd').format(controller.tourDetails.value.firstSchedule!)}'
                                                   : 'Flexible',
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
                                             TourSummary(
@@ -333,10 +336,10 @@ class _SingleTourState extends State<SingleTour> {
                                               text: controller
                                                   .tourDetails.value.type!,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
-                                            TourSummary(
+                                            const TourSummary(
                                               icon: Icons.train,
                                               title: 'Pickup From',
                                               text: 'Dhaka',
@@ -347,7 +350,7 @@ class _SingleTourState extends State<SingleTour> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Divider(
@@ -355,7 +358,7 @@ class _SingleTourState extends State<SingleTour> {
                                 ),
                                 HtmlWidget(
                                   '${controller.tourDetails.value.description}',
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -370,7 +373,7 @@ class _SingleTourState extends State<SingleTour> {
                                   icon: Icons.check_circle_outline_rounded,
                                   iconColor: Colors.blue,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Highlights(
@@ -380,7 +383,7 @@ class _SingleTourState extends State<SingleTour> {
                                     title: 'Visible Spots',
                                     icon: Icons.check_box_outlined,
                                     iconColor: Colors.blueAccent),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Divider(
@@ -393,7 +396,7 @@ class _SingleTourState extends State<SingleTour> {
                                     title: 'Includes',
                                     icon: Icons.check,
                                     iconColor: AppColor.primaryColor),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Highlights(
@@ -403,20 +406,20 @@ class _SingleTourState extends State<SingleTour> {
                                     title: 'Excludes',
                                     icon: Icons.close,
                                     iconColor: Colors.red),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(.1),
                                 ),
-                                Text(
+                                const Text(
                                   'Itinerary',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 ListView.builder(
@@ -434,20 +437,20 @@ class _SingleTourState extends State<SingleTour> {
                                     );
                                   },
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(.1),
                                 ),
-                                Text(
+                                const Text(
                                   'Gallery Images',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 CarouselSlider.builder(
@@ -458,8 +461,8 @@ class _SingleTourState extends State<SingleTour> {
                                         .tourDetails.value.images![index];
                                     return Container(
                                       width: double.infinity,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -469,11 +472,13 @@ class _SingleTourState extends State<SingleTour> {
                                           fit: BoxFit.cover,
                                           imageUrl:
                                               '${AppConfig.tourImage}/${image.imageName}',
-                                          placeholder: (context, url) => Center(
-                                              child:
-                                                  CircularProgressIndicator()),
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
                                           errorWidget: (context, url, error) =>
-                                              Icon(Icons.error), // Error icon
+                                              const Icon(
+                                                  Icons.error), // Error icon
                                         ),
                                       ),
                                     );
@@ -486,16 +491,17 @@ class _SingleTourState extends State<SingleTour> {
                                     enableInfiniteScroll: true,
                                     reverse: false,
                                     autoPlay: false,
-                                    autoPlayInterval: Duration(seconds: 3),
+                                    autoPlayInterval:
+                                        const Duration(seconds: 3),
                                     autoPlayAnimationDuration:
-                                        Duration(milliseconds: 800),
+                                        const Duration(milliseconds: 800),
                                     autoPlayCurve: Curves.fastOutSlowIn,
                                     enlargeCenterPage: false,
                                     enlargeFactor: 0.3,
                                     scrollDirection: Axis.horizontal,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],

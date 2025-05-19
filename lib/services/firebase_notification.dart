@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:tfb/views/SingleHouseboat/single_houseboat.dart';
 import 'package:tfb/views/SingleTour/single_tour.dart';
 import '../firebase_options.dart';
+import '../views/AccountScreen/BookingScreen/booking_all.dart';
 
 class NotificationService {
   static final _firebaseMessaging = FirebaseMessaging.instance;
@@ -126,10 +127,10 @@ class NotificationService {
           }
           break;
         case 'booking':
-          print("Navigate to Booking Screen with ID $id");
+          Get.to(const AllBookings());
           break;
         default:
-          print("Navigate to General Notification Screen");
+          Get.offAllNamed('/main');
       }
     } catch (e) {
       print("Error parsing payload: $e");

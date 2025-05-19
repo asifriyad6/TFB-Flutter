@@ -6,6 +6,7 @@ import 'package:tfb/controller/auth_controller.dart';
 import 'package:tfb/controller/houseboat_controller.dart';
 import 'package:tfb/utils/config.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:tfb/views/AccountScreen/ContactUs/contact_us.dart';
 import 'package:tfb/views/SingleHouseboat/houseboat_dateSelect.dart';
 import 'package:tfb/widget/custom_button.dart';
 import 'package:tfb/widget/highlights.dart';
@@ -46,7 +47,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
       body: Obx(
         () {
           if (controller.isLoading.value) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -63,20 +64,20 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                     imageUrl:
                         '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.thumbnail}',
                     placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) =>
-                        Icon(Icons.error), // Error icon
+                        const Icon(Icons.error), // Error icon
                   ),
                   SafeArea(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 15),
+                              margin: const EdgeInsets.only(left: 15),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(.5),
                                 shape: BoxShape.circle,
@@ -85,11 +86,11 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                icon: Icon(Icons.arrow_back),
+                                icon: const Icon(Icons.arrow_back),
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(right: 15),
+                              margin: const EdgeInsets.only(right: 15),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(.5),
                                 shape: BoxShape.circle,
@@ -132,7 +133,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         SizedBox(height: height * .28),
                         Container(
                           width: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
@@ -140,43 +141,43 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                             ),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.location_on,
                                       size: 14,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Text(
                                       '${controller.houseboatDetails.value.location?.name}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   controller.houseboatDetails.value.title!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Row(
@@ -185,12 +186,12 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                       width: width * .5,
                                       child: Column(
                                         children: [
-                                          TourSummary(
+                                          const TourSummary(
                                             icon: Icons.timer_outlined,
                                             title: 'Duration',
                                             text: '3 Days 2 Nights',
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TourSummary(
@@ -200,7 +201,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                                 .houseboatDetails.value.capacity
                                                 .toString(),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TourSummary(
@@ -218,20 +219,20 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                         width: width * .5,
                                         child: Column(
                                           children: [
-                                            TourSummary(
+                                            const TourSummary(
                                               icon: Icons.calendar_month,
                                               title: 'Tour Date',
                                               text: '24-01-2025',
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
-                                            TourSummary(
+                                            const TourSummary(
                                               icon: Icons.hiking,
                                               title: 'Tour Type',
                                               text: 'Adventure',
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
                                             TourSummary(
@@ -246,26 +247,26 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(.1),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 HtmlWidget(
                                   '${controller.houseboatDetails.value.description}',
-                                  textStyle: TextStyle(fontSize: 14),
+                                  textStyle: const TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(.1),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Highlights(
@@ -276,7 +277,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                   icon: Icons.check_circle_outline_rounded,
                                   iconColor: Colors.blue,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Highlights(
@@ -286,7 +287,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     title: 'Visible Spots',
                                     icon: Icons.check_box_outlined,
                                     iconColor: Colors.blueAccent),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Divider(
@@ -299,7 +300,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     title: 'Includes',
                                     icon: Icons.check,
                                     iconColor: AppColor.primaryColor),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Highlights(
@@ -309,20 +310,20 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                     title: 'Excludes',
                                     icon: Icons.close,
                                     iconColor: Colors.red),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(.1),
                                 ),
-                                Text(
+                                const Text(
                                   'Gallery Images',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 controller.houseboatDetails.value.images!
@@ -335,7 +336,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                             (context, index, realIndex) {
                                           return Container(
                                             width: double.infinity,
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                                 horizontal: 5),
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -349,12 +350,12 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                                 imageUrl:
                                                     '${AppConfig.houseboatImage}/${controller.houseboatDetails.value.images![index].imageName}',
                                                 placeholder: (context, url) =>
-                                                    Center(
+                                                    const Center(
                                                         child:
                                                             CircularProgressIndicator()),
                                                 errorWidget: (context, url,
                                                         error) =>
-                                                    Icon(Icons
+                                                    const Icon(Icons
                                                         .error), // Error icon
                                               ),
                                             ),
@@ -369,19 +370,19 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                           reverse: false,
                                           autoPlay: false,
                                           autoPlayInterval:
-                                              Duration(seconds: 3),
+                                              const Duration(seconds: 3),
                                           autoPlayAnimationDuration:
-                                              Duration(milliseconds: 800),
+                                              const Duration(milliseconds: 800),
                                           autoPlayCurve: Curves.fastOutSlowIn,
                                           enlargeCenterPage: false,
                                           enlargeFactor: 0.3,
                                           scrollDirection: Axis.horizontal,
                                         ),
                                       )
-                                    : Text(
+                                    : const Text(
                                         'No Gallary Images Found!',
                                       ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
@@ -419,7 +420,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Starting from',
                       style: TextStyle(
                         fontSize: 12,
@@ -430,7 +431,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         children: [
                           Text(
                             '৳${double.parse(controller.houseboatDetails.value.discountedPrice ?? '0.0')}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -446,7 +447,7 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                                       '0.0')
                               ? Text(
                                   '৳ ${double.parse(controller.houseboatDetails.value.startingPrice.toString())}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.red,
@@ -468,7 +469,9 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                       fullWidth: width * .5,
                       color: AppColor.tertiaryColor,
                       title: "Contact Us",
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(const ContactUs());
+                      },
                     );
                   } else {
                     return CustomButton(
@@ -478,12 +481,12 @@ class _SingleHouseboatState extends State<SingleHouseboat> {
                         showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20)),
                             ),
                             builder: (context) {
-                              return HouseboatDateSelect();
+                              return const HouseboatDateSelect();
                             });
                       },
                     );

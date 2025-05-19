@@ -7,6 +7,7 @@ import 'package:tfb/utils/colors.dart';
 import 'package:tfb/utils/config.dart';
 import 'package:tfb/views/AccountScreen/BookingScreen/booking_all.dart';
 import 'package:tfb/views/AccountScreen/ChangePassword/change_password.dart';
+import 'package:tfb/views/AccountScreen/ContactUs/contact_us.dart';
 import 'package:tfb/views/AccountScreen/ProfileScreen/profile_screen.dart';
 import 'package:tfb/views/AccountScreen/WishlistScreen/wishlist_screen.dart';
 import 'package:tfb/views/AccountScreen/widgets/menu_widget.dart';
@@ -203,7 +204,9 @@ class AccountScreen extends StatelessWidget {
                         AccountMenu(
                             icon: Icons.call,
                             title: 'Contact Us',
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(const ContactUs());
+                            },
                             iconBg: Colors.purple),
                         AccountMenu(
                             icon: Icons.logout,
